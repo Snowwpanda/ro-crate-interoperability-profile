@@ -1,0 +1,581 @@
+{
+  "@context" : [ "https://w3id.org/ro/crate/1.1/context", {
+    "rdfs:subClassOf" : "https://www.w3.org/TR/rdf-schema/#ch_subclassof",
+    "rdfs:Property" : "https://www.w3.org/TR/rdf-schema/#ch_properties",
+    "schema:domainIncludes" : "https://www.w3.org/TR/rdf-schema/#ch_domain",
+    "owl:equivalentClass" : "https://www.w3.org/TR/owl-ref/#equivalentClass-def",
+    "owl:equivalentProperty" : "https://www.w3.org/TR/owl-ref/#equivalentProperty-def",
+    "schema:rangeIncludes" : "https://www.w3.org/TR/rdf-schema/#ch_range",
+    "rdfs:Class" : "https://www.w3.org/TR/rdf-schema/#ch_class"
+  } ],
+  "@graph" : [ {
+    "name" : "name",
+    "description" : "description",
+    "@id" : "./",
+    "@type" : "Dataset",
+    "license" : {
+      "@id" : "licenseIdentifier"
+    },
+    "datePublished" : "2024-12-04T07:53:11Z",
+    "hasPart" : [ {
+      "@id" : "COLLECTION"
+    }, {
+      "@id" : "PUBLICATION_CREATOR"
+    }, {
+      "@id" : "hasPUBLICATION_CREATOR.IDENTIFIER_SCHEME"
+    }, {
+      "@id" : "hasPUBLICATION_CREATOR.AFFILITION_IDENTIFIER_SCHEME_URI"
+    }, {
+      "@id" : "PUBLICATION"
+    }, {
+      "@id" : "hasPUBLICATION_CREATOR.AFFILITION_IDENTIFIER_SCHEME"
+    }, {
+      "@id" : "hasPUBLICATION_CREATOR.GIVEN_NAME"
+    }, {
+      "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBLICATIONS_COLLECTION"
+    }, {
+      "@id" : "hasPUBLICATION.ORGANIZATION"
+    }, {
+      "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBCREA27"
+    }, {
+      "@id" : "hasPUBLICATION.TYPE"
+    }, {
+      "@id" : "PUBLICATIONS"
+    }, {
+      "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUB29"
+    }, {
+      "@id" : ":Space"
+    }, {
+      "@id" : "hasDEFAULT_COLLECTION_VIEW"
+    }, {
+      "@id" : ":Object"
+    }, {
+      "@id" : ":Vocabulary"
+    }, {
+      "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES"
+    }, {
+      "@id" : "hasPUBLICATION.CONTRIBUTOR"
+    }, {
+      "@id" : ":Dataset"
+    }, {
+      "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBLICATIONS_PUBLISHER_COLLECTION"
+    }, {
+      "@id" : "hasDEFAULT_OBJECT_TYPE"
+    }, {
+      "@id" : "hasXMLCOMMENTS"
+    }, {
+      "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUB25"
+    }, {
+      "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBLICATIONS_CREATOR_COLLECTION"
+    }, {
+      "@id" : ":Collection"
+    }, {
+      "@id" : "hasNAME"
+    }, {
+      "@id" : "hasPUBLICATION_CREATOR.IDENTIFIER"
+    }, {
+      "@id" : "hasPUBLICATION_CREATOR.AFFILITION_IDENTIFIER"
+    }, {
+      "@id" : "hasPUBLICATION_PUBLISHER.IDENTIFIER_SCHEME_URI"
+    }, {
+      "@id" : "hasPUBLICATION.IDENTIFIER"
+    }, {
+      "@id" : "hasPUBLICATION.CREATOR"
+    }, {
+      "@id" : "hasPUBLICATION.PUBLISHER"
+    }, {
+      "@id" : "hasPUBLICATION_PUBLISHER.IDENTIFIER"
+    }, {
+      "@id" : "hasPUBLICATION.PUBLICATION_YEAR"
+    }, {
+      "@id" : "hasPUBLICATION.DESCRIPTION"
+    }, {
+      "@id" : "hasPUBLICATION.OPENBIS_RELATED_IDENTIFIERS"
+    }, {
+      "@id" : ":Project"
+    }, {
+      "@id" : "PUBLICATION_PUBLISHER"
+    }, {
+      "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBPUB24"
+    }, {
+      "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBPUB26"
+    }, {
+      "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBCREA22"
+    }, {
+      "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBCREA23"
+    }, {
+      "@id" : "hasPUBLICATION.URL"
+    }, {
+      "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUB30"
+    }, {
+      "@id" : "hasPUBLICATION_CREATOR.FAMILY_NAME"
+    }, {
+      "@id" : "hasPUBLICATION_PUBLISHER.IDENTIFIER_SCHEME"
+    }, {
+      "@id" : "hasPUBLICATION.STATUS"
+    } ]
+  }, {
+    "about" : {
+      "@id" : "./"
+    },
+    "conformsTo" : {
+      "@id" : "https://w3id.org/ro/crate/1.1"
+    },
+    "@id" : "ro-crate-metadata.json",
+    "@type" : "CreativeWork"
+  }, {
+    "@type" : "COLLECTION",
+    "hasNAME" : "Publications Collection",
+    "hasDEFAULT_OBJECT_TYPE" : "PUBLICATION",
+    "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBLICATIONS_COLLECTION"
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION.DESCRIPTION",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION"
+    },
+    "owl:equivalentProperty" : [ {
+      "@id" : "http://datacite.org/schema/kernel-4#descriptions"
+    }, {
+      "@id" : "https://schema.org/description"
+    }, {
+      "@id" : "https://schema.org/abstract"
+    } ]
+  }, {
+    "@id" : ":Space",
+    "@type" : "rdfs:Class"
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION.PUBLICATION_YEAR",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:dateTime"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION"
+    },
+    "owl:equivalentProperty" : [ {
+      "@id" : "http://datacite.org/schema/kernel-4#publicationYear"
+    }, {
+      "@id" : "https://schema.org/datePublished"
+    } ]
+  }, {
+    "@id" : ":Collection",
+    "@type" : "rdfs:Class"
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION.URL",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION"
+    },
+    "owl:equivalentProperty" : [ {
+      "@id" : "http://datacite.org/schema/kernel-4#url"
+    }, {
+      "@id" : "https://schema.org/url"
+    } ]
+  }, {
+    "@type" : "PUBLICATION_CREATOR",
+    "hasPUBLICATION_CREATOR.GIVEN_NAME" : "Elhacham",
+    "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBCREA22"
+  }, {
+    "@id" : ":Object",
+    "@type" : "rdfs:Class"
+  }, {
+    "@type" : "PUBLICATION",
+    "hasNAME" : "Genetic mechanisms of critical illness in COVID-19",
+    "hasPUBLICATION.URL" : "https://www.nature.com/articles/s41586-020-03065-y#citeas",
+    "hasPUBLICATION.IDENTIFIER" : "https://doi.org/10.1038/s41586-020-03065-y",
+    "hasPUBLICATION.STATUS" : "Registered",
+    "hasPUBLICATION.PUBLICATION_YEAR" : "2020-12-11 15:48:55 +0100",
+    "hasPUBLICATION.TYPE" : "DataPaper",
+    "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUB29",
+    "hasPUBLICATION.CREATOR" : {
+      "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBCREA23"
+    },
+    "hasPUBLICATION.PUBLISHER" : {
+      "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBPUB26"
+    }
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION_CREATOR.IDENTIFIER_SCHEME",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION_CREATOR"
+    }
+  }, {
+    "@type" : "COLLECTION",
+    "hasNAME" : "Publications creator collection",
+    "hasDEFAULT_OBJECT_TYPE" : "PUBLICATION_CREATOR",
+    "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBLICATIONS_CREATOR_COLLECTION"
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION_CREATOR.GIVEN_NAME",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION_CREATOR"
+    },
+    "owl:equivalentProperty" : [ {
+      "@id" : "http://datacite.org/schema/kernel-4#givenName"
+    }, {
+      "@id" : "https://schema.org/givenName"
+    } ]
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION.IDENTIFIER",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION"
+    },
+    "owl:equivalentProperty" : [ {
+      "@id" : "http://datacite.org/schema/kernel-4#doi"
+    }, {
+      "@id" : "https://schema.org/identifier"
+    } ]
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION_PUBLISHER.IDENTIFIER_SCHEME",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION_PUBLISHER"
+    },
+    "owl:equivalentProperty" : {
+      "@id" : "http://datacite.org/schema/kernel-4#publisherIdentifierScheme"
+    }
+  }, {
+    "@type" : ":Space",
+    "description" : "Public Repositories",
+    "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES"
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION_CREATOR.AFFILITION_IDENTIFIER_SCHEME_URI",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION_CREATOR"
+    }
+  }, {
+    "@type" : "PUBLICATION_PUBLISHER",
+    "hasPUBLICATION_PUBLISHER.IDENTIFIER" : "Science",
+    "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBPUB26"
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION.CONTRIBUTOR",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION"
+    },
+    "owl:equivalentProperty" : [ {
+      "@id" : "http://datacite.org/schema/kernel-4#doi"
+    }, {
+      "@id" : "https://schema.org/identifier"
+    } ]
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION_CREATOR.FAMILY_NAME",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION_CREATOR"
+    },
+    "owl:equivalentProperty" : [ {
+      "@id" : "http://datacite.org/schema/kernel-4#familyName"
+    }, {
+      "@id" : "https://schema.org/familyName"
+    } ]
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasDEFAULT_COLLECTION_VIEW",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "COLLECTION"
+    }
+  }, {
+    "@type" : "COLLECTION",
+    "hasNAME" : "Publications Publisher Collection",
+    "hasDEFAULT_COLLECTION_VIEW" : "LIST_VIEW",
+    "hasDEFAULT_OBJECT_TYPE" : "PUBLICATION_PUBLISHER",
+    "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBLICATIONS_PUBLISHER_COLLECTION"
+  }, {
+    "@type" : ":Space",
+    "@id" : "PUBLICATIONS"
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasXMLCOMMENTS",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION"
+    }
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION.ORGANIZATION",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION"
+    }
+  }, {
+    "@id" : "COLLECTION",
+    "@type" : "rdfs:Class",
+    "rdfs:subClassOf" : {
+      "@id" : ":Collection"
+    }
+  }, {
+    "@type" : "PUBLICATION_CREATOR",
+    "hasPUBLICATION_CREATOR.IDENTIFIER_SCHEME" : "https://orcid.org",
+    "hasPUBLICATION_CREATOR.IDENTIFIER" : "https://orcid.org/0000-0001-9844-8214",
+    "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBCREA27"
+  }, {
+    "@type" : "PUBLICATION_CREATOR",
+    "hasPUBLICATION_CREATOR.IDENTIFIER_SCHEME" : "https://orcid.org/",
+    "hasPUBLICATION_CREATOR.IDENTIFIER" : "https://orcid.org/0000-0002-2423-3090",
+    "hasPUBLICATION_CREATOR.GIVEN_NAME" : "Pairo-Castineira",
+    "hasPUBLICATION_CREATOR.FAMILY_NAME" : "Erola",
+    "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBCREA23"
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION.STATUS",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION"
+    },
+    "owl:equivalentProperty" : [ {
+      "@id" : "http://datacite.org/schema/kernel-4#stateSelection"
+    }, {
+      "@id" : "https://schema.org/creativeWorkStatus"
+    } ]
+  }, {
+    "@type" : "PUBLICATION",
+    "hasNAME" : "Global human-made mass exceeds all living biomass",
+    "hasPUBLICATION.URL" : "https://www.nature.com/articles/s41586-020-3010-5#citeas",
+    "hasPUBLICATION.IDENTIFIER" : "https://doi.org/10.1038/s41586-020-3010-5",
+    "hasPUBLICATION.STATUS" : "Registered",
+    "hasPUBLICATION.PUBLICATION_YEAR" : "2020-12-09 15:43:20 +0100",
+    "hasPUBLICATION.TYPE" : "DataPaper",
+    "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUB25",
+    "hasPUBLICATION.CREATOR" : {
+      "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBCREA22"
+    },
+    "hasPUBLICATION.PUBLISHER" : {
+      "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBPUB24"
+    }
+  }, {
+    "@id" : "PUBLICATION_PUBLISHER",
+    "@type" : "rdfs:Class",
+    "rdfs:subClassOf" : {
+      "@id" : ":Object"
+    }
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION_CREATOR.AFFILITION_IDENTIFIER_SCHEME",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION_CREATOR"
+    }
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION_CREATOR.AFFILITION_IDENTIFIER",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION_CREATOR"
+    }
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION.TYPE",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION"
+    }
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION.CREATOR",
+    "schema:rangeIncludes" : {
+      "@id" : ":Object"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION"
+    },
+    "owl:equivalentProperty" : [ {
+      "@id" : "http://datacite.org/schema/kernel-4#creator"
+    }, {
+      "@id" : "https://schema.org/author"
+    }, {
+      "@id" : "https://schema.org/creator"
+    } ]
+  }, {
+    "@id" : ":Vocabulary",
+    "@type" : "rdfs:Class"
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION_CREATOR.IDENTIFIER",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION_CREATOR"
+    },
+    "owl:equivalentProperty" : [ {
+      "@id" : "http://datacite.org/schema/kernel-4#nameIdentifier"
+    }, {
+      "@id" : "https://schema.org/identifier"
+    } ]
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION_PUBLISHER.IDENTIFIER",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION_PUBLISHER"
+    },
+    "owl:equivalentProperty" : [ {
+      "@id" : "http://datacite.org/schema/kernel-4#publisherIdentifier"
+    }, {
+      "@id" : "https://schema.org/identifier"
+    } ]
+  }, {
+    "@id" : ":Project",
+    "@type" : "rdfs:Class"
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION_PUBLISHER.IDENTIFIER_SCHEME_URI",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION_PUBLISHER"
+    },
+    "owl:equivalentProperty" : {
+      "@id" : "http://datacite.org/schema/kernel-4#schemeURI"
+    }
+  }, {
+    "@id" : "PUBLICATION",
+    "@type" : "rdfs:Class",
+    "rdfs:subClassOf" : {
+      "@id" : ":Object"
+    }
+  }, {
+    "@type" : "PUBLICATION",
+    "hasNAME" : "Quantum computational advantage using photons",
+    "hasPUBLICATION.URL" : "https://www.science.org/doi/10.1126/science.abe8770",
+    "hasPUBLICATION.IDENTIFIER" : "DOI: 10.1126/science.abe8770",
+    "hasPUBLICATION.STATUS" : "Registered",
+    "hasPUBLICATION.PUBLICATION_YEAR" : "2020-12-11 15:50:44 +0100",
+    "hasPUBLICATION.TYPE" : "DataPaper",
+    "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUB30",
+    "hasPUBLICATION.CREATOR" : {
+      "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBCREA27"
+    },
+    "hasPUBLICATION.PUBLISHER" : {
+      "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBPUB26"
+    }
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION.PUBLISHER",
+    "schema:rangeIncludes" : {
+      "@id" : ":Object"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION"
+    },
+    "owl:equivalentProperty" : [ {
+      "@id" : "http://datacite.org/schema/kernel-4#publisher"
+    }, {
+      "@id" : "https://schema.org/publisher"
+    } ]
+  }, {
+    "@id" : ":Dataset",
+    "@type" : "rdfs:Class"
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasDEFAULT_OBJECT_TYPE",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "COLLECTION"
+    }
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasNAME",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : [ {
+      "@id" : "COLLECTION"
+    }, {
+      "@id" : "PUBLICATION_CREATOR"
+    }, {
+      "@id" : "PUBLICATION"
+    }, {
+      "@id" : "PUBLICATION_PUBLISHER"
+    } ],
+    "owl:equivalentProperty" : [ {
+      "@id" : "http://datacite.org/schema/kernel-4#title"
+    }, {
+      "@id" : "https://schema.org/headline"
+    }, {
+      "@id" : "http://datacite.org/schema/kernel-4#nameIdentifier"
+    }, {
+      "@id" : "https://schema.org/identifier"
+    } ]
+  }, {
+    "@type" : "PUBLICATION_PUBLISHER",
+    "hasPUBLICATION_PUBLISHER.IDENTIFIER" : "https://www.nature.com",
+    "@id" : "/PUBLICATIONS/PUBLIC_REPOSITORIES/PUBPUB24"
+  }, {
+    "@id" : "PUBLICATION_CREATOR",
+    "@type" : "rdfs:Class",
+    "rdfs:subClassOf" : {
+      "@id" : ":Object"
+    },
+    "owl:equivalentClass" : [ {
+      "@id" : "http://datacite.org/schema/kernel-4#creator"
+    }, {
+      "@id" : "https://schema.org/author"
+    }, {
+      "@id" : "https://schema.org/creator"
+    } ]
+  }, {
+    "@type" : "rdfs:Property",
+    "@id" : "hasPUBLICATION.OPENBIS_RELATED_IDENTIFIERS",
+    "schema:rangeIncludes" : {
+      "@id" : "xsd:string"
+    },
+    "schema:domainIncludes" : {
+      "@id" : "PUBLICATION"
+    },
+    "owl:equivalentProperty" : {
+      "@id" : "http://datacite.org/schema/kernel-4#relatedIdentifiers"
+    }
+  } ]
+}
