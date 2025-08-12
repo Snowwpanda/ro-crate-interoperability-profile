@@ -3,19 +3,12 @@ from typing import List, Optional, Union
 from lib_ro_crate_schema.crate.rdfs_class import RdfsClass
 from .literal_type import LiteralType
 from .restriction import Restriction
-from .type_property import TypeProperty
-from .ro import RoReference, ToRo
+from .type_property import TypeProperty, RoTypeProperty
+from .ro import RoReference, ToRo, serialize_references
 from pydantic import BaseModel
 
 
-def serialize_subclass_of(value: List[str] | str | None):
-    match value:
-        case None:
-            return None
-        case str(val) | [val]:
-            return RoReference(id=val)
-        case [vals] as ls:
-            return [RoReference(id=sc) for sc in ls]
+
 
 class Type(BaseModel):
     id: str 
@@ -30,8 +23,10 @@ class Type(BaseModel):
     def to_ro(self) -> RdfsClass:
         return RdfsClass(id=self.id, 
                   self_type="rdfs:Class", 
-                  subclass_of=serialize_subclass_of(self.subclass_of),
-                  ontological_annotations=None, rdfs_properties=None)
+                  subclass_of=serialize_references(self.subclass_of),
+                  rdfs_properties=[prop for popr in self.rdfs_property] if self.rdfs_property is not None,
+                  ontological_annotations=None, rdfs_properties=None),
+
         
 
 

@@ -1,6 +1,6 @@
 from lib_ro_crate_schema.crate.schema_facade import RDFS_CLASS, OWL_RESTRICTION
 from pydantic import BaseModel, Field
-from typing import Literal, Protocol, TypeVar, Generic
+from typing import List, Literal, Protocol, TypeVar, Generic
 
 RO_TYPE_LITERAL = "@type"
 RO_ID_LITERAL = "@id"
@@ -19,6 +19,7 @@ class RoReference(BaseModel):
     This class encodes the reference to another object through its @id
     """
     id: str = Field(..., serialization_alias=RO_ID_LITERAL)
+
 
 
 class RoEntity(BaseModel):
@@ -41,3 +42,14 @@ class ToRo(Protocol[T]):
     """
     def to_ro(self) -> T:
         ...
+
+type RoReferences = RoReference | List[RoReference] | None
+
+def serialize_references(value: List[str] | str | None) -> RoReferences:
+    match value:
+        case None:
+            return None
+        case str(val) | [val]:
+            return RoReference(id=val)
+        case [vals] as ls:
+            return [RoReference(id=sc) for sc in ls]
