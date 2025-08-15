@@ -200,6 +200,11 @@ We created a small example. It can be found under:
 This describes the export
 of `./examples/reference-openbis-export`.
 
+
+# SHCL Schema 
+
+A (embryonal) [SHACL](https://www.w3.org/TR/shacl/) shapes graph to validate exports is located in [`./schema.shacl`](./schema.shacl)
+
 # API
 
 **Formal description:**

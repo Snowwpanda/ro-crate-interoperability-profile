@@ -1,0 +1,115 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX schema: <http://schema.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX openBIS: <_>
+PREFIX sh: <http://www.w3.org/ns/shacl#> 
+PREFIX ex: <http://example.org/>
+PREFIX ro:<https://w3id.org/ro/crate/1.1/context>
+
+
+# This ensures that @type is either a type declaration here or a reference 
+# to a type
+ex:TypeMustBeClassShape
+  a sh:NodeShape ;
+  sh:targetSubjectsOf rdf:type ;
+  sh:property [
+    sh:path rdf:type ;
+    sh:or (
+      [ sh:in (rdfs:Class owl:restriction rdfs:Property schema:Dataset schema:CreativeWork ) ]         # Case 1: type is exactly rdfs:Class
+      [ sh:class rdfs:Class ]            # Case 2: type is a node of type rdfs:Class
+    ) ;
+    #sh:nodeKind sh:IRI ;
+    sh:minCount 1 ;
+    sh:message "type should be either rdfs:Class or owl:restriction or rdfs:Property or a valid reference to a rdfs:Class or "
+  ] .
+
+
+
+#This checks the rdfs:Class definitions
+ex:ClassDefinitionShape a sh:NodeShape ;
+    sh:targetClass rdfs:Class ;
+    sh:property [
+        sh:path rdfs:subClassOf ;
+        sh:nodeKind sh:IRIOrLiteral;
+        sh:class rdfs:Class;
+        sh:minCount 1 ;
+        sh:maxCount 1;
+    ] ;
+    sh:property [
+        sh:path owl:restriction ;
+        sh:minCount 0 ;
+        sh:nodeKind sh:IRIOrLiteral ;
+        sh:class owl:restriction  ;
+    ] ;
+    sh:property [
+        sh:path owl:equivalentClass ;
+        sh:minCount 0 ;
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 0 ;
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 0 ;
+    ]  .
+
+#Check the shape of "owl:restriction"
+ex:OwlRestrictionDefinitionShape a sh:NodeShape;
+    sh:targetClass owl:restriction ;
+    #owl:onProperty should reference a valid rdfs:Property
+    sh:property [
+        sh:path owl:onProperty;
+        sh:maxCount 1;
+        sh:minCount 1;
+        sh:nodeKind sh:IRI;
+        sh:class rdfs:Property ;
+    ] ;
+    sh:property [
+        sh:path owl:minCardinality ;
+        sh:minCount 0;
+        sh:maxCount 1;
+        sh:in (0 1);
+    ] ;
+    sh:property [
+        sh:path owl:maxCardinality ;
+        sh:minCount 0;
+        sh:maxCount 1;
+        sh:in (0 1);
+    ]  .
+
+ex:PropertyDefinitionShape a sh:NodeShape ;
+    sh:targetClass rdfs:Property ;
+    #sh:closed true;
+    #sh:ignoredProperties (rdf:type) ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:nodeKind sh:Literal ;
+        sh:minCount 0 ;
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 0 ;
+    ] ;
+    sh:property [
+        sh:path owl:equivalentProperty ;
+        sh:minCount 0 ;
+        sh:nodeKind sh:IRI ;
+        #sh:class rdfs:Property ;
+    ] ;
+    sh:property [
+        sh:path schema:domainIncludes ;
+        sh:minCount 0 ;
+        sh:targetClass rdfs:Class ;
+        sh:nodeKind sh:IRI ;
+        sh:type rdfs:Class ;
+    ];
+    sh:property [
+        sh:path schema:rangeIncludes ;
+        sh:minCount 0 ;
+        sh:nodeKind sh:IRI ;
+        #The type of the range reference is either a literal type or a reference to another rdfs:Class
+        #sh:type [sh:in (xsd:string xsd:integer xsd:date xsd:dateTime)];
+    ] .
