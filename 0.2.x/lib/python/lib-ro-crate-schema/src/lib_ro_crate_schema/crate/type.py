@@ -1,11 +1,13 @@
 from typing import List, Optional, Union
 
+from lib_ro_crate_schema.crate.rdf import is_type, object_id
 from lib_ro_crate_schema.crate.rdfs_class import RdfsClass
 from .literal_type import LiteralType
 from .restriction import Restriction
 from .type_property import TypeProperty, RoTypeProperty
 from .ro import RoReference, ToRo, serialize_references
 from pydantic import BaseModel
+from rdflib import Node, Literal, URIRef, RDF, RDFS, XSD, IdentifiedNode, OWL
 
 
 
@@ -20,12 +22,26 @@ class Type(BaseModel):
     label: str
     restrictions: List[Restriction] | None
 
-    def to_ro(self) -> RdfsClass:
-        return RdfsClass(id=self.id, 
-                  self_type="rdfs:Class", 
-                  subclass_of=serialize_references(self.subclass_of),
-                  rdfs_properties=[prop for popr in self.rdfs_property] if self.rdfs_property is not None,
-                  ontological_annotations=None, rdfs_properties=None),
+    def to_triples(self) -> list[Node]:
+        """
+        Emits the type definition as a set of triples
+        """
+
+        yield is_type(self.id, RDFS.Class)
+        yield (object_id(self.id), RDFS.comment, Literal(self.comment))
+        yield (object_id(self.id), RDFS.label, Literal(self.label))
+        annotations = [(object_id(self.id), OWL.equivalentClass, URIRef(cls)) for cls in self.ontological_annotations]
+        for ann in annotations:
+            yield ann
+        for prop in self.rdfs_property:
+            print(prop)
+            yield from prop.to_triples()
+    # def to_ro(self) -> RdfsClass:
+    #     return RdfsClass(id=self.id, 
+    #               self_type="rdfs:Class", 
+    #               subclass_of=serialize_references(self.subclass_of),
+    #               #rdfs_properties=[prop.to_ro() for prop in self.rdfs_property] if self.rdfs_property is not None else None,
+    #               ontological_annotations=None)
 
         
 

@@ -9,8 +9,15 @@ authors = [
 requires-python = ">=3.13"
 dependencies = [
     "pydantic>=2.11.7",
+    "pyld>=2.0.4",
+    "pyshacl>=0.30.1",
+    "rdflib-jsonld>=0.6.2",
     "rocrate>=0.14.0",
 ]
+
+[project.scripts]
+check = "lib_ro_crate_schema.check:main"
+example = "lib_ro_crate_schema.example.examples:main"
 
 [build-system]
 requires = ["hatchling"]
