@@ -1,13 +1,10 @@
-from typing import List, Optional, Union, Generator
+from typing import List, Generator
 
 from lib_ro_crate_schema.crate.rdf import is_type, object_id
-from lib_ro_crate_schema.crate.rdfs_class import RdfsClass
-from .literal_type import LiteralType
 from .restriction import Restriction
-from .type_property import TypeProperty, RoTypeProperty
-from .ro import RoReference, ToRo, serialize_references
+from .type_property import TypeProperty
 from pydantic import BaseModel
-from rdflib import Node, Literal, URIRef, RDF, RDFS, XSD, IdentifiedNode, OWL
+from rdflib import Node, Literal, URIRef, RDFS, OWL
 
 
 class Type(BaseModel):

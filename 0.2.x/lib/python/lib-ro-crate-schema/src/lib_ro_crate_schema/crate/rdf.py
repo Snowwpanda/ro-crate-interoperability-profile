@@ -1,8 +1,9 @@
 from typing import Protocol
 from rdflib import Graph
-from rdflib import Node, URIRef, RDF, Literal, IdentifiedNode
+from rdflib import Node, URIRef, RDF, IdentifiedNode
 from rdflib import Namespace
 from rdflib.namespace import NamespaceManager
+
 
 type  Triple = tuple[IdentifiedNode, IdentifiedNode, Node]
 SCHEMA = Namespace("http://schema.org/")

@@ -1,4 +1,3 @@
-from lib_ro_crate_schema.crate.ro import RO_ID_LITERAL
 from pydantic import BaseModel, Field
 from rdflib.graph import Node
 from rdflib import URIRef, RDF, Literal
@@ -30,18 +29,4 @@ class MetadataEntry(BaseModel):
                     yield is_type(self.id, URIRef(tid))
         for prop_name, prop_value in self.props.items():
             yield (subj, object_id(prop_name), Literal(prop_value))
-        # # If you have a types field, emit type triples (optional, not in original fields)
-        # if hasattr(self, 'types') and self.types:
-        #     for t in self.types:
-        #         tid = t.id if hasattr(t, 'id') else t
-        #         yield is_type(self.id, URIRef(tid))
-        # if self.props:
-        #     for p, v in self.props.items():
-        #         pid = p.id if hasattr(p, 'id') else p
-        #         yield (subj, URIRef(pid), Literal(v))
-        # if self.references:
-        #     for p, vs in self.references.items():
-        #         pid = p.id if hasattr(p, 'id') else p
-        #         for v in vs:
-        #             vid = v.id if hasattr(v, 'id') else v
-        #             yield (subj, URIRef(pid), URIRef(vid))
+

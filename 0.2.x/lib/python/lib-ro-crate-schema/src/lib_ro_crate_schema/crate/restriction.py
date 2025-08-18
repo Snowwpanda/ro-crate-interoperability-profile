@@ -1,15 +1,8 @@
 from typing import Literal as TLiteral
-from lib_ro_crate_schema.crate.owl_restriction import OwlRestriction
 from lib_ro_crate_schema.crate.rdf import is_type, object_id
-from lib_ro_crate_schema.crate.ro import ToRo
-from lib_ro_crate_schema.crate.ro_constants import (
-    OWL_MIN_CARDINALITY,
-    OWL_MAX_CARDINALITY,
-    OWL_RESTRICTION,
-)
-from pydantic import BaseModel, Field
-from rdflib import URIRef, OWL, Literal, XSD
-from .type_property import TypeProperty
+
+from pydantic import BaseModel
+from rdflib import OWL, Literal, XSD
 from uuid import uuid4
 
 
