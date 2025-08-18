@@ -10,7 +10,6 @@ from rocrate.model.contextentity import ContextEntity
 from rdflib import URIRef, RDF, RDFS, Literal, OWL
 
 
-
 class TypeProperty(BaseModel):
     id: str
     label: Optional[str] = None
@@ -29,7 +28,7 @@ class TypeProperty(BaseModel):
             yield (subj, RDFS.comment, Literal(self.comment))
         if self.domain_includes:
             for d in self.domain_includes:
-                yield (subj, SCHEMA.domainIncludes,  URIRef(d))
+                yield (subj, SCHEMA.domainIncludes, URIRef(d))
         if self.range_includes:
             for r in self.range_includes:
                 yield (subj, SCHEMA.rangeIncludes, URIRef(r))
@@ -40,5 +39,3 @@ class TypeProperty(BaseModel):
             for r in self.ontological_annotations:
                 yield (subj, OWL.equivalentClass, URIRef(r))
         # Add more as needed for data types, annotations, etc.
-
-

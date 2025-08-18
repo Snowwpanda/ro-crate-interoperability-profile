@@ -14,3 +14,9 @@ RDFS_SUBCLASS_OF: Literal["rdfs:subClassOf"] = "rdfs:subClassOf"
 MIN_CARDINALITY_MANDATORY: Literal[1] = 1
 MAX_CARDINALITY_SINGLE: Literal[1] = 1
 MAX_CARDINALITY_UNLIMITED: Literal[0] = 0
+
+
+RO_EXTRA_CTX = {
+    OWL_MAX_CARDINALITY: {"@type": "xsd:integer"},
+    OWL_MIN_CARDINALITY: {"@type": "xsd:integer"},
+}

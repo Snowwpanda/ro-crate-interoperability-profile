@@ -5,13 +5,14 @@ from rdflib import Namespace
 from rdflib.namespace import NamespaceManager
 
 
-type  Triple = tuple[IdentifiedNode, IdentifiedNode, Node]
+type Triple = tuple[IdentifiedNode, IdentifiedNode, Node]
 SCHEMA = Namespace("http://schema.org/")
 BASE = Namespace("http://example.com/")
 
+
 class RDFSerializable(Protocol):
-    def to_rdf(self) -> list[Triple]:
-        ...
+    def to_rdf(self) -> list[Triple]: ...
+
 
 def is_type(id: str, type: URIRef) -> Triple:
     """
@@ -20,17 +21,19 @@ def is_type(id: str, type: URIRef) -> Triple:
     """
     return (object_id(id), RDF.type, type)
 
+
 def object_id(id: str) -> URIRef:
     return BASE[id]
+
 
 def simplfy(node: Node, manager: NamespaceManager):
     match node:
         case URIRef(ref):
-
             (base, absolute, target) = manager.compute_qname(ref)
             return URIRef(f"{base}:{target}")
         case _:
             return node
+
 
 def unbind(g: Graph) -> Graph:
     nm = g.namespace_manager

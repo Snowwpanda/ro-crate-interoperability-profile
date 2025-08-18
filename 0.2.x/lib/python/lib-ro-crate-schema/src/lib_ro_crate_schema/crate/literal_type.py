@@ -13,7 +13,8 @@ class LiteralType(Enum):
     STRING = "xsd:string"
     XML_LITERAL = "rdf:XMLLiteral"
 
-def to_rdf(literal: LiteralType)  -> Node:
+
+def to_rdf(literal: LiteralType) -> Node:
     match literal:
         case LiteralType.BOOLEAN:
             return XSD.boolean
@@ -31,6 +32,7 @@ def to_rdf(literal: LiteralType)  -> Node:
             return XSD.string
         case LiteralType.XML_LITERAL:
             from rdflib.namespace import RDF
+
             return RDF.XMLLiteral
         case _:
             raise ValueError(f"Unknown LiteralType: {literal}")

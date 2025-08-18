@@ -8,11 +8,12 @@ from typing import Union
 from lib_ro_crate_schema.crate.type_property import TypeProperty
 from lib_ro_crate_schema.crate.type import Type
 
+
 class MetadataEntry(BaseModel):
     id: str
     # props: property reference (TypeProperty or str) -> value
     props: dict[Union[TypeProperty, str], str]
-    #Types can be either strings or directly references to Type (RDF Types)
+    # Types can be either strings or directly references to Type (RDF Types)
     types: list[Union[Type, str]]
     # references: property reference (TypeProperty or str) -> list of type references (Type or str)
     references: dict[Union[TypeProperty, str], list[Union[Type, str]]] | None = None
@@ -29,4 +30,3 @@ class MetadataEntry(BaseModel):
                     yield is_type(self.id, URIRef(tid))
         for prop_name, prop_value in self.props.items():
             yield (subj, object_id(prop_name), Literal(prop_value))
-

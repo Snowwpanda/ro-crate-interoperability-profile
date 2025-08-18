@@ -1,9 +1,15 @@
 import tempfile
 import json
 from pathlib import Path
+from lib_ro_crate_schema.crate.rdf import BASE
+from lib_ro_crate_schema.crate.ro_constants import RO_EXTRA_CTX
+from lib_ro_crate_schema.crate.schema_facade import SchemaFacade
 import pyld
+from rocrate.rocrate import ROCrate
+from rdflib import Graph
 
-def emit_crate_with_context(crate, context):
+
+def emit_crate_with_context(crate: ROCrate, context: dict[str, str]) -> dict[str, str]:
     """
     Emits the ROCrate to a temporary file, reads it back, updates the @context directly (no pyld),
     and returns the updated JSON-LD dict. Uses the tempfile context manager for cleanup.
@@ -16,17 +22,21 @@ def emit_crate_with_context(crate, context):
     if isinstance(orig_ctx, str):
         ld["@context"] = [orig_ctx, context]
     else:
-        raise ValueError(f"Unsupported original @context type: {type(orig_ctx)}. Only string is supported for RO-Crate compatibility.")
+        raise ValueError(
+            f"Unsupported original @context type: {type(orig_ctx)}. Only string is supported for RO-Crate compatibility."
+        )
     return ld
 
-def update_jsonld_context(ld_obj, new_context):
+
+def update_jsonld_context(ld_obj: dict, new_context: dict[str, str]):
     """
     (Legacy) Use pyld to update the @context of a JSON-LD object.
     Returns a new JSON-LD object with the updated context.
     """
     return pyld.jsonld.compact(ld_obj, new_context)
 
-def get_context(g):
+
+def get_context(g: Graph) -> dict[str, str]:
     """
     Extracts all used namespaces from the rdflib graph and returns a JSON-LD @context dict.
     This can be used for JSON-LD compaction or as a base for RO-Crate @context.
@@ -38,6 +48,7 @@ def get_context(g):
     if "schema" not in context:
         context["schema"] = "https://schema.org/"
     return context
+
 
 def add_schema_to_crate(schema: SchemaFacade, crate: ROCrate) -> dict:
     """
@@ -55,8 +66,9 @@ def add_schema_to_crate(schema: SchemaFacade, crate: ROCrate) -> dict:
 
     context = {**get_context(metadata_graph), **RO_EXTRA_CTX}
     ld_obj_compact = update_jsonld_context(ld_obj, context)
+    breakpoint()
     # Add each object in the compacted graph to the crate
     for obj in ld_obj_compact.get("@graph", []):
         crate.add_jsonld(obj)
     # Use the tempfile-based utility to update context and return
-    return emit_crate_with_context(crate, context)
+    new_crate = emit_crate_with_context(crate, context)

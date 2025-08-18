@@ -1,4 +1,3 @@
-
 import json
 from lib_ro_crate_schema.crate.rdf import BASE
 from lib_ro_crate_schema.crate.type import Type
@@ -8,18 +7,12 @@ from lib_ro_crate_schema.crate.metadata_entry import MetadataEntry
 from lib_ro_crate_schema.crate.schema_facade import SchemaFacade
 from rocrate.rocrate import ROCrate
 from rdflib import Graph
-from lib_ro_crate_schema.utils.jsonld_utils import emit_crate_with_context, update_jsonld_context, get_context
-
-
-RO_EXTRA_CTX = {
-    "owl:minCardinality": {"@type": "xsd:integer"},
-    "owl:maxCardinality": {"@type": "xsd:integer"},
-}
-
-def emit_crate_with_context(crate: ROCrate, context: dict) -> dict:
-    return pyld.jsonld.compact(ld, context)
-
-
+from lib_ro_crate_schema.crate.jsonld_utils import (
+    add_schema_to_crate,
+    emit_crate_with_context,
+    update_jsonld_context,
+    get_context,
+)
 
 
 def main():

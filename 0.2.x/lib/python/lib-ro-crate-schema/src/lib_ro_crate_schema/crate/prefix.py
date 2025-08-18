@@ -1,6 +1,6 @@
-
 from rdflib import Graph, URIRef
 from rdflib.namespace import split_uri
+
 
 def split_namespace(node: URIRef) -> tuple[str, str]:
     try:

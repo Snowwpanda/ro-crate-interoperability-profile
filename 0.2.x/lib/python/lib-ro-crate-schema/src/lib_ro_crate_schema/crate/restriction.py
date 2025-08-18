@@ -16,11 +16,17 @@ class Restriction(BaseModel):
         validate_by_name = True
         populate_by_name = True
 
-
-
     def to_triples(self):
         subj = object_id(self.id)
         yield is_type(self.id, OWL.Restriction)
         yield (subj, OWL.onProperty, object_id(self.property_type))
-        yield (subj, OWL.minCardinality, Literal(self.min_cardinality, datatype=XSD.integer))
-        yield (subj, OWL.maxCardinality, Literal(self.max_cardinality,datatype=XSD.integer))
+        yield (
+            subj,
+            OWL.minCardinality,
+            Literal(self.min_cardinality, datatype=XSD.integer),
+        )
+        yield (
+            subj,
+            OWL.maxCardinality,
+            Literal(self.max_cardinality, datatype=XSD.integer),
+        )
