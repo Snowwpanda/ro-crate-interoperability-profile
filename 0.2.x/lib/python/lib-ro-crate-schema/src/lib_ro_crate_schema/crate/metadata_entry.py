@@ -2,24 +2,46 @@ from lib_ro_crate_schema.crate.ro import RO_ID_LITERAL
 from pydantic import BaseModel, Field
 from rdflib.graph import Node
 from rdflib import URIRef, RDF, Literal
-from lib_ro_crate_schema.crate.rdf import is_type
+from lib_ro_crate_schema.crate.rdf import is_type, object_id
+
+
+from typing import Union
+from lib_ro_crate_schema.crate.type_property import TypeProperty
+from lib_ro_crate_schema.crate.type import Type
 
 class MetadataEntry(BaseModel):
-    id: str 
-    props: dict[str, str] 
-    references: dict[str, list[str]] | None = None
+    id: str
+    # props: property reference (TypeProperty or str) -> value
+    props: dict[Union[TypeProperty, str], str]
+    #Types can be either strings or directly references to Type (RDF Types)
+    types: list[Union[Type, str]]
+    # references: property reference (TypeProperty or str) -> list of type references (Type or str)
+    references: dict[Union[TypeProperty, str], list[Union[Type, str]]] | None = None
     children_identifiers: list[str] | None = None
     parent_identifiers: list[str] | None = None
 
-    def to_triples(self, subject=None):
-        subj = URIRef(self.id) if subject is None else subject
-        if self.types:
-            for t in self.types:
-                yield is_type(self.id, URIRef(t))
-        if self.props:
-            for p, v in self.props.items():
-                yield (subj, URIRef(p), Literal(v))
-        if self.references:
-            for p, vs in self.references.items():
-                for v in vs:
-                    yield (subj, URIRef(p), URIRef(v))
+    def to_triples(self):
+        subj = object_id(self.id)
+        for current_type in self.types:
+            match current_type:
+                case str(tid):
+                    yield is_type(self.id, URIRef(tid))
+                case Type(id=tid):
+                    yield is_type(self.id, URIRef(tid))
+        for prop_name, prop_value in self.props.items():
+            yield (subj, object_id(prop_name), Literal(prop_value))
+        # # If you have a types field, emit type triples (optional, not in original fields)
+        # if hasattr(self, 'types') and self.types:
+        #     for t in self.types:
+        #         tid = t.id if hasattr(t, 'id') else t
+        #         yield is_type(self.id, URIRef(tid))
+        # if self.props:
+        #     for p, v in self.props.items():
+        #         pid = p.id if hasattr(p, 'id') else p
+        #         yield (subj, URIRef(pid), Literal(v))
+        # if self.references:
+        #     for p, vs in self.references.items():
+        #         pid = p.id if hasattr(p, 'id') else p
+        #         for v in vs:
+        #             vid = v.id if hasattr(v, 'id') else v
+        #             yield (subj, URIRef(pid), URIRef(vid))

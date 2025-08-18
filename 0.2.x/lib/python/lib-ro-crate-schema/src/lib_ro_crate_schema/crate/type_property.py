@@ -37,7 +37,7 @@ class TypeProperty(BaseModel):
             yield (subj, RDFS.comment, Literal(self.comment))
         if self.domain_includes:
             for d in self.domain_includes:
-                yield (subj, URIRef(DOMAIN_IDENTIFIER), URIRef(d))
+                yield (subj, SCHEMA.domainIncludes,  URIRef(d))
         if self.range_includes:
             for r in self.range_includes:
                 yield (subj, SCHEMA.rangeIncludes, URIRef(r))

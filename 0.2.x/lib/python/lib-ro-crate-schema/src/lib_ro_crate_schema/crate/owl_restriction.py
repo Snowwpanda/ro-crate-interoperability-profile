@@ -7,8 +7,8 @@ from lib_ro_crate_schema.crate.ro_constants import (
     OWL_MIN_CARDINALITY,
 )
 from pydantic import BaseModel, Field
-from rdflib import URIRef, RDF, OWL, Literal
-from lib_ro_crate_schema.crate.rdf import is_type
+from rdflib import URIRef, RDF, OWL, Literal, URIRef
+from lib_ro_crate_schema.crate.rdf import is_type, object_id
 
 
 class OwlRestriction(BaseModel):
@@ -18,7 +18,7 @@ class OwlRestriction(BaseModel):
     max_cardinality: TLiteral[0, 1]
 
     def to_triples(self, subject=None):
-        subj = URIRef(self.id) if subject is None else subject
+        subj = object_id(self.id) if subject is None else subject
         yield is_type(self.id, URIRef(OWL_RESTRICTION))
         yield (subj, URIRef(ON_PROPERTY), URIRef(self.on_property))
         yield (subj, URIRef(OWL_MIN_CARDINALITY), Literal(self.min_cardinality))

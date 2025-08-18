@@ -1,4 +1,4 @@
-from typing import List, Literal
+from typing import Generator, List, Literal
 from lib_ro_crate_schema.crate.ro_constants import RDFS_SUBCLASS_OF
 from lib_ro_crate_schema.crate.type_property import TypeProperty, RoTypeProperty
 from lib_ro_crate_schema.crate.ro import (
@@ -10,7 +10,7 @@ from lib_ro_crate_schema.crate.ro import (
 )
 from pydantic import BaseModel, Field
 from rdflib import URIRef, RDF, RDFS, Literal, Node
-from lib_ro_crate_schema.crate.rdf import is_type
+from lib_ro_crate_schema.crate.rdf import Triple, is_type
 
 
 class RdfsClass(RoEntity):
@@ -24,7 +24,7 @@ class RdfsClass(RoEntity):
     )
     rdfs_properties: List[RoTypeProperty] | None = None
 
-    def to_triples(self, subject=None):
+    def to_triples(self, subject=None) -> Generator[Triple]:
         subj = URIRef(self.id) if subject is None else subject
         yield is_type(self.id, RDFS.Class)
         if self.subclass_of:
