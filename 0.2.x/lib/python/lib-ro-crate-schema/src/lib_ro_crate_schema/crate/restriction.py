@@ -1,5 +1,5 @@
 from typing import Literal as TLiteral
-from lib_ro_crate_schema.crate.rdf import is_type, object_id
+from lib_ro_crate_schema.crate.rdf import is_type, object_id, Triple
 
 from pydantic import BaseModel
 from rdflib import OWL, Literal, XSD

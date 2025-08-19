@@ -3,7 +3,7 @@ from rdflib import Graph
 from rdflib import Node, URIRef, RDF, IdentifiedNode
 from rdflib import Namespace
 from rdflib.namespace import NamespaceManager
-
+from typing import TypeVar
 
 type Triple = tuple[IdentifiedNode, IdentifiedNode, Node]
 SCHEMA = Namespace("http://schema.org/")
@@ -12,6 +12,11 @@ BASE = Namespace("http://example.com/")
 
 class RDFSerializable(Protocol):
     def to_rdf(self) -> list[Triple]: ...
+
+
+class RDFDeserializable[T](Protocol):
+    @classmethod
+    def from_rdf(cls, triples: list[Triple]): ...
 
 
 def is_type(id: str, type: URIRef) -> Triple:

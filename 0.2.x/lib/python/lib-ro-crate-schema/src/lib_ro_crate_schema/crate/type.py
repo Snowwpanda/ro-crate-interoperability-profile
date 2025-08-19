@@ -42,9 +42,11 @@ class Type(BaseModel):
         ]
         for ann in annotations:
             yield ann
-        for prop in self.get_restrictions():
-            print(prop)
-            yield from prop.to_triples()
+        for restriction in self.get_restrictions():
+            yield from restriction.to_triples()
+        for prop in self.rdfs_property:
+            prop_with_domain = prop.model_copy(update=dict(domain_includes=[self.id]))
+            yield from prop_with_domain.to_triples()
 
     # def to_ro(self) -> RdfsClass:
     #     return RdfsClass(id=self.id,

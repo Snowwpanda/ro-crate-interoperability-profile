@@ -55,20 +55,16 @@ def add_schema_to_crate(schema: SchemaFacade, crate: ROCrate) -> dict:
     Emits triples from schema, builds a graph, compacts JSON-LD, adds objects to the crate,
     writes to a tempfile, updates context using pyld, and returns the final JSON-LD dict.
     """
-    triples = schema.to_triples()
-    metadata_graph = Graph()
-    metadata_graph.bind("base", BASE)
-    for t in triples:
-        metadata_graph.add(t)
+    metadata_graph = schema.to_graph()
     # Serialize and compact JSON-LD
     ld_ser = metadata_graph.serialize(format="json-ld")
     ld_obj = pyld.jsonld.json.loads(ld_ser)
 
     context = {**get_context(metadata_graph), **RO_EXTRA_CTX}
     ld_obj_compact = update_jsonld_context(ld_obj, context)
-    breakpoint()
     # Add each object in the compacted graph to the crate
     for obj in ld_obj_compact.get("@graph", []):
         crate.add_jsonld(obj)
     # Use the tempfile-based utility to update context and return
     new_crate = emit_crate_with_context(crate, context)
+    return new_crate
