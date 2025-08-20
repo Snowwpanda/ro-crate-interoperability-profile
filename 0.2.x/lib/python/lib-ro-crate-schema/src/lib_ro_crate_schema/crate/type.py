@@ -1,6 +1,7 @@
-from typing import List, Generator
+from typing import List, Generator, Union
 
 from lib_ro_crate_schema.crate.rdf import is_type, object_id
+from lib_ro_crate_schema.crate.registry import ForwardRef, Registry
 from .restriction import Restriction
 from .type_property import TypeProperty
 from pydantic import BaseModel
@@ -10,7 +11,7 @@ from rdflib import Node, Literal, URIRef, RDFS, OWL
 class Type(BaseModel):
     id: str
     type: str
-    subclass_of: List[str] | None
+    subclass_of: List[Union[str, "Type", ForwardRef["Type"]]] | None
     ontological_annotations: List[str] | None
     rdfs_property: List[TypeProperty] | None
     comment: str
@@ -26,6 +27,12 @@ class Type(BaseModel):
             for prop in self.rdfs_property
             if self.rdfs_property
         ]
+
+    def resolve(self, registry: Registry):
+        print(f"Before: {self.rdfs_property}")
+        for prop in self.rdfs_property:
+            prop.resolve(registry)
+        print(f"After: {self.rdfs_property}")
 
     def to_triples(self) -> Generator[Node]:
         """
@@ -62,3 +69,6 @@ class Type(BaseModel):
     #         ontological_annotations=
     #         equivalent_class=
     #     )
+
+
+TypeProperty.model_rebuild()

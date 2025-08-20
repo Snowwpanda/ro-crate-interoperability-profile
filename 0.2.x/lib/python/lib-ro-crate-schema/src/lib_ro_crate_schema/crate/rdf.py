@@ -1,4 +1,5 @@
-from typing import Protocol
+from typing import Protocol, Self
+from lib_ro_crate_schema.crate.registry import Registry
 from rdflib import Graph
 from rdflib import Node, URIRef, RDF, IdentifiedNode
 from rdflib import Namespace
@@ -17,6 +18,13 @@ class RDFSerializable(Protocol):
 class RDFDeserializable[T](Protocol):
     @classmethod
     def from_rdf(cls, triples: list[Triple]): ...
+
+
+class Resolvable(Protocol):
+    """
+    A protocol for a class that implements reference resolution
+    """
+    def resolve(self, reg: Registry) -> Self: ...
 
 
 def is_type(id: str, type: URIRef) -> Triple:

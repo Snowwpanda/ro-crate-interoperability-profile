@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from rdflib.graph import Node
 from rdflib import URIRef, RDF, Literal
 from lib_ro_crate_schema.crate.rdf import is_type, object_id
