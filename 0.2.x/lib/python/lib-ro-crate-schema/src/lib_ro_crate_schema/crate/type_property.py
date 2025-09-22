@@ -436,3 +436,9 @@ f1 = SchemaFacade(types=[t1], entries=[md])
 
 g1 = f1.to_rdf()
 print(g1.serialize(format="json-ld"))
+
+#TODO
+# 1. Cleanup the code (at the moment is all in this module)
+# 2. Generate Type and MetadataEntry from existing BaseModels
+# 3. Implement import from external crate
+# 4. Add the generated graph to a crate and make sure the context is correct

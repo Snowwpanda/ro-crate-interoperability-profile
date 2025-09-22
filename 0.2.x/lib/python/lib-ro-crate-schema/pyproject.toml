@@ -1,10 +1,11 @@
 [project]
 name = "lib-ro-crate-schema"
 version = "0.1.0"
-description = "Add your description here"
+description = "Import and export Ro crate"
 readme = "README.md"
 authors = [
     { name = "Simone Baffelli", email = "simone.baffelli@empa.ch" }
+    { name = "Pascal Su", email = "pascal.su@empa.ch" }
 ]
 requires-python = ">=3.13"
 dependencies = [
