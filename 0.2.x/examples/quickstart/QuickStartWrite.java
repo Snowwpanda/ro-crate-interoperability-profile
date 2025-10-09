@@ -1,3 +1,4 @@
+package ch.eth.sis.rocrate.example.doc;
 
 import ch.eth.sis.rocrate.SchemaFacade;
 import ch.eth.sis.rocrate.facade.*;
@@ -7,13 +8,16 @@ import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-public class QuickStart
+public class QuickStartWrite
 {
 
-    private static final String PREFIX = "";
+    private static final String PREFIX = "Example";
 
     private static final String SEPARATOR = ":";
+
+    public static final String TMP_EXAMPLE_CRATE = "/tmp/example-crate";
 
     public static void main(String[] args)
     {
@@ -59,10 +63,10 @@ public class QuickStart
 
         }
 
+        Type experimentType = new Type();
 
         /* Building our Experiment type */
         {
-            Type experimentType = new Type();
             experimentType.setId(PREFIX + SEPARATOR + "Experiment");
 
             {
@@ -98,36 +102,41 @@ public class QuickStart
             MetadataEntry personAndreas = new MetadataEntry();
             personAndreas.setId("PERSON1");
             Map<String, Serializable> properties = new LinkedHashMap<>();
+            personAndreas.setTypes(Set.of(personType.getId()));
             properties.put("givenname", "Andreas");
             properties.put("lastname", "Meier");
             properties.put("identifier", "https://orcid.org/0009-0002-6541-4637");
             personAndreas.setProps(properties);
+            personAndreas.setReferences(new LinkedHashMap<>());
             schemaFacade.addEntry(personAndreas);
 
             MetadataEntry personJuan = new MetadataEntry();
-            personAndreas.setId("PERSON2");
+            personJuan.setId("PERSON2");
+            personJuan.setTypes(Set.of(personType.getId()));
             Map<String, Serializable> properties2 = new LinkedHashMap<>();
             properties2.put("givenname", "Andreas");
             properties2.put("lastname", "Meier");
             properties2.put("identifier", "https://orcid.org/0009-0002-6541-4637");
-            personAndreas.setProps(properties2);
+            personJuan.setProps(properties2);
+            personJuan.setReferences(new LinkedHashMap<>());
+
             schemaFacade.addEntry(personJuan);
 
             MetadataEntry experiment1 = new MetadataEntry();
             experiment1.setId("EXPERIMENT1");
             experiment1.setReferences(Map.of("creator", List.of(personAndreas.getId())));
+            experiment1.setTypes(Set.of(experimentType.getId()));
             Map<String, Serializable> propertiesExperiment = new LinkedHashMap<>();
             propertiesExperiment.put("name", "Example Experiment");
-            propertiesExperiment.put("date", "2025-09-08 08:41:50.000"); // ISO 8601
+            propertiesExperiment.put("date", "2025-09-08 08:41:50.000");
             experiment1.setProps(propertiesExperiment);
             schemaFacade.addEntry(experiment1);
 
         }
 
         FolderWriter folderWriter = new FolderWriter();
-        folderWriter.save(schemaFacade.getCrate(), "/tmp/example-crate");
+        folderWriter.save(schemaFacade.getCrate(), TMP_EXAMPLE_CRATE);
 
     }
 
 }
-
