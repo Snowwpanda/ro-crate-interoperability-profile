@@ -1,0 +1,118 @@
+@startuml RO-Crate Core Classes
+
+!theme plain
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+}
+
+package "Core Schema Objects" {
+  
+  class SchemaFacade {
+    +types: List[Type]
+    +metadata_entries: List[MetadataEntry]  
+    +standalone_properties: List[TypeProperty]
+    +standalone_restrictions: List[Restriction]
+    +prefix: str
+    --
+    +addType(type: Type)
+    +addEntry(entry: MetadataEntry)
+    +add_property_type(prop: TypeProperty)
+    +get_crate(): ROCrate
+    +from_ro_crate(path): SchemaFacade
+    +write(destination: str)
+    +to_json(): dict
+  }
+
+  class Type {
+    +id: str
+    +rdfs_property: List[TypeProperty]
+    +restrictions: List[Restriction]
+    +label: str
+    +comment: str
+    +sub_class_of: List[ForwardRef]
+    --
+    +to_triples(): Generator[Triple]
+  }
+
+  class TypeProperty {
+    +id: str
+    +range_includes: List[LiteralType]
+    +domain_includes: List[str]
+    +required: bool
+    +label: str
+    +comment: str
+    --
+    +to_triples(): Generator[Triple]
+  }
+
+  class MetadataEntry {
+    +id: str
+    +class_id: str
+    +properties: Dict[str, Any]
+    +label: str
+    +comment: str
+    --
+    +to_triples(): Generator[Triple]
+  }
+
+  class Restriction {
+    +id: str
+    +target_class: str
+    +target_property: str
+    +restriction_type: RestrictionType
+    +value: Any
+    --
+    +to_triples(): Generator[Triple]
+  }
+}
+
+package "Registry System" {
+  class SchemaRegistry {
+    +registered_models: Dict[str, TypeTemplate]
+    --
+    +register_model(name: str, template: TypeTemplate)
+    +get_model(name: str): TypeTemplate
+    +list_models(): List[str]
+  }
+
+  class TypeTemplate {
+    +name: str
+    +properties: List[TypePropertyTemplate]
+    +base_classes: List[str]
+    --
+    +to_type(): Type
+  }
+}
+
+package "Processing Utilities" {
+  class JSONLDUtils {
+    --
+    +get_context(graph: Graph): List
+    +add_schema_to_crate(facade: SchemaFacade, crate: ROCrate): ROCrate
+  }
+
+  class ForwardRefResolver {
+    --
+    +resolve_ref(ref: Union[ForwardRef, str]): Any
+  }
+}
+
+' Relationships
+SchemaFacade ||--o{ Type : contains
+SchemaFacade ||--o{ MetadataEntry : contains
+SchemaFacade ||--o{ TypeProperty : "standalone properties"
+SchemaFacade ||--o{ Restriction : "standalone restrictions"
+
+Type ||--o{ TypeProperty : defines
+Type ||--o{ Restriction : constraints
+
+SchemaRegistry ||--o{ TypeTemplate : manages
+TypeTemplate --> Type : generates
+
+SchemaFacade --> JSONLDUtils : uses
+SchemaFacade --> ForwardRefResolver : uses
+SchemaFacade --> SchemaRegistry : accesses
+
+@enduml

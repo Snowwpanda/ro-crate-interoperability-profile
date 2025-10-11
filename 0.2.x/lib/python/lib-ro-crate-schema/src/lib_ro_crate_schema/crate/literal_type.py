@@ -15,24 +15,22 @@ class LiteralType(Enum):
 
 
 def to_rdf(literal: LiteralType) -> Node:
-    match literal:
-        case LiteralType.BOOLEAN:
-            return XSD.boolean
-        case LiteralType.INTEGER:
-            return XSD.integer
-        case LiteralType.DOUBLE:
-            return XSD.double
-        case LiteralType.DECIMAL:
-            return XSD.decimal
-        case LiteralType.FLOAT:
-            return XSD.float
-        case LiteralType.DATETIME:
-            return XSD.dateTime
-        case LiteralType.STRING:
-            return XSD.string
-        case LiteralType.XML_LITERAL:
-            from rdflib.namespace import RDF
-
-            return RDF.XMLLiteral
-        case _:
-            raise ValueError(f"Unknown LiteralType: {literal}")
+    if literal == LiteralType.BOOLEAN:
+        return XSD.boolean
+    elif literal == LiteralType.INTEGER:
+        return XSD.integer
+    elif literal == LiteralType.DOUBLE:
+        return XSD.double
+    elif literal == LiteralType.DECIMAL:
+        return XSD.decimal
+    elif literal == LiteralType.FLOAT:
+        return XSD.float
+    elif literal == LiteralType.DATETIME:
+        return XSD.dateTime
+    elif literal == LiteralType.STRING:
+        return XSD.string
+    elif literal == LiteralType.XML_LITERAL:
+        from rdflib.namespace import RDF
+        return RDF.XMLLiteral
+    else:
+        raise ValueError(f"Unknown LiteralType: {literal}")

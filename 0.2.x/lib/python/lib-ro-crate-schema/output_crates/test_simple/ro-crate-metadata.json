@@ -1,0 +1,194 @@
+{
+    "@context": [
+        "https://w3id.org/ro/crate/1.1/context",
+        {
+            "base": "http://example.com/",
+            "openbis": "http://openbis.org/",
+            "owl": "http://www.w3.org/2002/07/owl#",
+            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+            "schema": "https://schema.org/",
+            "xsd": "http://www.w3.org/2001/XMLSchema#"
+        }
+    ],
+    "@graph": [
+        {
+            "@id": "./",
+            "@type": "Dataset",
+            "datePublished": "2025-10-09T06:37:56+00:00",
+            "description": "Testing reference export",
+            "name": "Simple Test"
+        },
+        {
+            "@id": "ro-crate-metadata.json",
+            "@type": "CreativeWork",
+            "about": {
+                "@id": "./"
+            },
+            "conformsTo": {
+                "@id": "https://w3id.org/ro/crate/1.1"
+            }
+        },
+        {
+            "@id": "base:serial_number",
+            "@type": "rdf:Property",
+            "owl:equivalentProperty": {
+                "@id": "schema:serialNumber"
+            },
+            "rdfs:label": "Serial Number",
+            "schema:domainIncludes": {
+                "@id": "base:Equipment"
+            },
+            "schema:rangeIncludes": {
+                "@id": "xsd:string"
+            }
+        },
+        {
+            "@id": "base:Equipment",
+            "@type": "rdfs:Class",
+            "owl:equivalentClass": {
+                "@id": "openbis:Equipment"
+            },
+            "owl:restriction": [
+                {
+                    "@id": "base:55dcce41-ab53-4e80-967e-26c5cb79b60f"
+                },
+                {
+                    "@id": "base:969b7391-7686-46ec-8b45-8b344c4ffa84"
+                },
+                {
+                    "@id": "base:0d9e15aa-1874-407d-9ff4-fa769f7bd9b6"
+                },
+                {
+                    "@id": "base:8fbb5c86-620f-46f7-866a-01e77b921153"
+                },
+                {
+                    "@id": "base:c10f0529-ca4e-4857-b8ce-d50897e6828e"
+                }
+            ],
+            "rdfs:comment": "Laboratory equipment with optional nesting",
+            "rdfs:label": "Equipment",
+            "rdfs:subClassOf": {
+                "@id": "schema:Thing"
+            }
+        },
+        {
+            "@id": "base:969b7391-7686-46ec-8b45-8b344c4ffa84",
+            "@type": "owl:Restriction",
+            "owl:maxCardinality": "1",
+            "owl:minCardinality": "1",
+            "owl:onProperty": {
+                "@id": "base:model"
+            }
+        },
+        {
+            "@id": "base:base:parent",
+            "@type": "Equipment",
+            "base:created_date": "2023-01-01T00:00:00",
+            "base:model": "P1",
+            "base:name": "Parent Equipment",
+            "base:serial_number": "P001"
+        },
+        {
+            "@id": "base:created_date",
+            "@type": "rdf:Property",
+            "owl:equivalentProperty": {
+                "@id": "schema:dateCreated"
+            },
+            "rdfs:label": "Created Date",
+            "schema:domainIncludes": {
+                "@id": "base:Equipment"
+            },
+            "schema:rangeIncludes": {
+                "@id": "xsd:dateTime"
+            }
+        },
+        {
+            "@id": "base:c10f0529-ca4e-4857-b8ce-d50897e6828e",
+            "@type": "owl:Restriction",
+            "owl:maxCardinality": "1",
+            "owl:minCardinality": "0",
+            "owl:onProperty": {
+                "@id": "base:parent_equipment"
+            }
+        },
+        {
+            "@id": "base:parent_equipment",
+            "@type": "rdf:Property",
+            "owl:equivalentProperty": {
+                "@id": "schema:isPartOf"
+            },
+            "rdfs:label": "Parent Equipment",
+            "schema:domainIncludes": {
+                "@id": "base:Equipment"
+            },
+            "schema:rangeIncludes": {
+                "@id": "base:Equipment"
+            }
+        },
+        {
+            "@id": "base:base:child",
+            "@type": "Equipment",
+            "base:created_date": "2023-02-01T00:00:00",
+            "base:model": "C1",
+            "base:name": "Child Equipment",
+            "base:parent_equipment": {
+                "@id": "base:base:parent"
+            },
+            "base:serial_number": "C001"
+        },
+        {
+            "@id": "base:model",
+            "@type": "rdf:Property",
+            "rdfs:comment": "Equipment model/version",
+            "rdfs:label": "Model",
+            "schema:domainIncludes": {
+                "@id": "base:Equipment"
+            },
+            "schema:rangeIncludes": {
+                "@id": "xsd:string"
+            }
+        },
+        {
+            "@id": "base:8fbb5c86-620f-46f7-866a-01e77b921153",
+            "@type": "owl:Restriction",
+            "owl:maxCardinality": "1",
+            "owl:minCardinality": "1",
+            "owl:onProperty": {
+                "@id": "base:created_date"
+            }
+        },
+        {
+            "@id": "base:name",
+            "@type": "rdf:Property",
+            "owl:equivalentProperty": {
+                "@id": "schema:name"
+            },
+            "rdfs:label": "Name",
+            "schema:domainIncludes": {
+                "@id": "base:Equipment"
+            },
+            "schema:rangeIncludes": {
+                "@id": "xsd:string"
+            }
+        },
+        {
+            "@id": "base:55dcce41-ab53-4e80-967e-26c5cb79b60f",
+            "@type": "owl:Restriction",
+            "owl:maxCardinality": "1",
+            "owl:minCardinality": "1",
+            "owl:onProperty": {
+                "@id": "base:name"
+            }
+        },
+        {
+            "@id": "base:0d9e15aa-1874-407d-9ff4-fa769f7bd9b6",
+            "@type": "owl:Restriction",
+            "owl:maxCardinality": "1",
+            "owl:minCardinality": "1",
+            "owl:onProperty": {
+                "@id": "base:serial_number"
+            }
+        }
+    ]
+}

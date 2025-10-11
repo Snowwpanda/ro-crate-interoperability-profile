@@ -1,0 +1,8 @@
+timestamp,parameter,value,unit,equipment,notes
+2024-10-06T15:30:00.000000,Temperature,85.5,°C,FlowSyn Reactor,Maintained constant throughout reaction
+2024-10-06T15:30:00.000000,Pressure,2.3,bar,FlowSyn Reactor,Slightly elevated from atmospheric
+2024-10-06T15:30:00.000000,Reaction Duration,45.0,minutes,FlowSyn Reactor,Optimal reaction time determined
+2024-10-06T15:30:00.000000,Benzene Consumption,0.5,mol,Balance,Starting material fully consumed
+2024-10-06T15:30:00.000000,Toluene Consumption,0.7,mol,Balance,Partial consumption, excess reagent
+2024-10-06T15:30:00.000000,Product Yield,78.5,%,FlowSyn Reactor,High yield synthesis of Benzene-Toluene Adduct
+2024-10-06T15:30:00.000000,Product Purity,94.2,%,FlowSyn Reactor,Determined by GC-MS analysis
