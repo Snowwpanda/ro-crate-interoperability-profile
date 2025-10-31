@@ -26,7 +26,7 @@ pip install lib-ro-crate-schema
 ### From Source
 
 ```bash
-git clone https://github.com/Snowwpanda/ro-crate-interoperability-profile.git
+git clone https://github.com/researchobjectschema/ro-crate-interoperability-profile
 cd ro-crate-interoperability-profile/0.2.x/lib/python/lib-ro-crate-schema
 pip install -e .
 ```
