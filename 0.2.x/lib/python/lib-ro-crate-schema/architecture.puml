@@ -1,0 +1,110 @@
+@startuml RO-Crate Architecture
+
+!theme plain
+skinparam backgroundColor white
+skinparam componentStyle rectangle
+
+package "Input Sources" as inputs {
+  [SHACL Schema\nConstraints] as shacl
+  [Pydantic Models\n@ro_crate_schema] as pymod
+  [Manual Schema\nDefinition] as manual
+  [Existing RO-Crate\nMetadata] as rocin
+}
+
+package "External Dependencies" as external {
+  [RDFLib\nRDF Graph Processing] as rdflib
+  [RO-Crate\nPython Library] as rocrate
+  [Pydantic\nData Validation] as pydantic
+  [JSON-LD\nLinked Data] as jsonld
+}
+
+package "Core Library Components" as core {
+  
+  package "Schema Facade (Orchestrator)" as orchestrator {
+    [SchemaFacade\nMain API Controller] as sf
+  }
+
+  package "Schema Components" as components {
+    [Type\nRDFS Classes] as type
+    [TypeProperty\nRDFS Properties] as prop
+    [MetadataEntry\nRDF Instances] as meta
+    [Restriction\nConstraints] as rest
+  }
+
+  package "Registry & Discovery" as registry {
+    [SchemaRegistry\nDecorator System] as reg
+    [ForwardRefResolver\nReference Linking] as frr
+  }
+
+  package "JSON-LD Processing" as jsonld_proc {
+    [JSONLDUtils\nContext Generation] as jsonldutils
+    [Dynamic Context\nNamespace Detection] as ctx
+  }
+
+  package "RDF Processing" as rdf_proc {
+    [RDF Module\nTriple Generation] as rdfp
+    [RDF Graph\nConversion] as graph
+  }
+}
+
+package "API Interfaces" as apis {
+  [Python API\nadd_type(), get_entries()] as pyapi
+  [Java API Compatibility\naddType(), getEntries()] as japi
+  [Decorator API\n@ro_crate_schema] as decapi
+}
+
+package "Output Formats" as outputs {
+  [RO-Crate\nJSON-LD Files] as rocout
+  [RDF/Turtle\nSerialization] as ttlout
+  [Pure JSON-LD\nSchema Export] as jsonout
+  [Data Files\nAttachment] as fileout
+}
+
+package "Examples & Usage" as usage {
+  [Examples\nfull_example.py\nquickstart.py] as examples
+  [Test Suite\npytest Framework\n83 Tests] as tests
+}
+
+' Data Flow Connections
+shacl --> sf
+pymod --> reg
+manual --> sf
+rocin --> sf
+
+reg --> sf
+sf --> type
+sf --> prop
+sf --> meta
+sf --> rest
+
+type --> rdfp
+prop --> rdfp
+meta --> rdfp
+rest --> rdfp
+
+rdfp --> graph
+graph --> jsonldutils
+jsonldutils --> ctx
+
+frr --> sf
+sf --> pyapi
+sf --> japi
+reg --> decapi
+
+sf --> rocout
+graph --> ttlout
+jsonldutils --> jsonout
+sf --> fileout
+
+pyapi --> examples
+japi --> examples
+decapi --> examples
+sf --> tests
+
+' External Dependencies
+rdflib --> graph
+rocrate --> sf
+pydantic --> reg
+jsonld --> jsonldutils
+
+@enduml

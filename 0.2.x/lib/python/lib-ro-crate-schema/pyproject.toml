@@ -1,25 +1,78 @@
 [project]
 name = "lib-ro-crate-schema"
-version = "0.1.0"
-description = "Import and export Ro crate"
+version = "0.2.0"
+description = "A Pythonic library for creating and managing RO-Crates with schema definitions using Pydantic models"
 readme = "README.md"
+license = { text = "Apache-2.0" }
 authors = [
-    { name = "Simone Baffelli", email = "simone.baffelli@empa.ch" }
+    { name = "Simone Baffelli", email = "simone.baffelli@empa.ch" },
     { name = "Pascal Su", email = "pascal.su@empa.ch" }
+]
+maintainers = [
+    { name = "Simone Baffelli", email = "simone.baffelli@empa.ch" },
+    { name = "Pascal Su", email = "pascal.su@empa.ch" }
+]
+keywords = [
+    "ro-crate",
+    "research-object",
+    "metadata",
+    "pydantic",
+    "linked-data",
+    "rdf",
+    "schema",
+    "fair-data"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 requires-python = ">=3.13"
 dependencies = [
     "pydantic>=2.11.7",
-    "pydantic-rdf>=0.2.0",
     "pyld>=2.0.4",
     "pyshacl>=0.30.1",
-    "rdflib-jsonld>=0.6.2",
+    "rdflib>=7.1.4",
     "rocrate>=0.14.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Snowwpanda/ro-crate-interoperability-profile"
+Documentation = "https://github.com/Snowwpanda/ro-crate-interoperability-profile/tree/main/0.2.x/lib/python/lib-ro-crate-schema"
+Repository = "https://github.com/Snowwpanda/ro-crate-interoperability-profile"
+Issues = "https://github.com/Snowwpanda/ro-crate-interoperability-profile/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
 ]
 
 [project.scripts]
 check = "lib_ro_crate_schema.check:main"
 example = "lib_ro_crate_schema.example.examples:main"
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers"
+testpaths = [
+    "tests",
+]
+python_files = [
+    "test_*.py",
+    "*_test.py",
+]
+python_classes = [
+    "Test*",
+]
+python_functions = [
+    "test_*",
+]
 
 [build-system]
 requires = ["hatchling"]

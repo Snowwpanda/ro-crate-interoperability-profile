@@ -1,12 +1,11 @@
-from typing import Protocol, Self
-from lib_ro_crate_schema.crate.registry import Registry
+from typing import Protocol, TypeVar, Tuple
+from lib_ro_crate_schema.crate.forward_ref_resolver import ForwardRefResolver
 from rdflib import Graph
 from rdflib import Node, URIRef, RDF, IdentifiedNode
 from rdflib import Namespace
 from rdflib.namespace import NamespaceManager
-from typing import TypeVar
 
-type Triple = tuple[IdentifiedNode, IdentifiedNode, Node]
+Triple = Tuple[IdentifiedNode, IdentifiedNode, Node]
 SCHEMA = Namespace("http://schema.org/")
 BASE = Namespace("http://example.com/")
 
@@ -15,7 +14,9 @@ class RDFSerializable(Protocol):
     def to_rdf(self) -> list[Triple]: ...
 
 
-class RDFDeserializable[T](Protocol):
+T = TypeVar('T')
+
+class RDFDeserializable(Protocol):
     @classmethod
     def from_rdf(cls, triples: list[Triple]): ...
 
@@ -24,7 +25,7 @@ class Resolvable(Protocol):
     """
     A protocol for a class that implements reference resolution
     """
-    def resolve(self, reg: Registry) -> Self: ...
+    def resolve(self, reg: ForwardRefResolver): ...
 
 
 def is_type(id: str, type: URIRef) -> Triple:
@@ -40,12 +41,11 @@ def object_id(id: str) -> URIRef:
 
 
 def simplfy(node: Node, manager: NamespaceManager):
-    match node:
-        case URIRef(ref):
-            (base, absolute, target) = manager.compute_qname(ref)
-            return URIRef(f"{base}:{target}")
-        case _:
-            return node
+    if isinstance(node, URIRef):
+        (base, absolute, target) = manager.compute_qname(node)
+        return URIRef(f"{base}:{target}")
+    else:
+        return node
 
 
 def unbind(g: Graph) -> Graph:

@@ -1,0 +1,324 @@
+# RO-Crate Schema SHACL Validation
+# Updated for the modern Python lib-ro-crate-schema architecture
+# Validates RDF output from the TypeProperty, Type, and MetadataEntry classes
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix schema: <https://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix base: <http://example.com/> .
+@prefix ex: <http://example.org/shapes#> .
+
+# =====================================================
+# RDFS CLASS DEFINITIONS (Type objects)
+# =====================================================
+
+ex:ClassDefinitionShape
+    a sh:NodeShape ;
+    sh:targetClass rdfs:Class ;
+    sh:name "RDFS Class Shape" ;
+    sh:description "Validates Type objects - RDFS class definitions with properties and restrictions" ;
+    
+    # Must have rdfs:subClassOf (inheritance)
+    sh:property [
+        sh:path rdfs:subClassOf ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+        sh:message "Every rdfs:Class must have at least one rdfs:subClassOf relationship"
+    ] ;
+    
+    # Optional label and comment
+    sh:property [
+        sh:path rdfs:label ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:message "rdfs:label must be a single string literal"
+    ] ;
+    
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:message "rdfs:comment must be a single string literal"
+    ] ;
+    
+    # OWL restrictions (cardinality constraints)
+    sh:property [
+        sh:path owl:restriction ;
+        sh:class owl:Restriction ;
+        sh:message "owl:restriction must reference valid owl:Restriction objects"
+    ] ;
+    
+    # Optional equivalent classes
+    sh:property [
+        sh:path owl:equivalentClass ;
+        sh:nodeKind sh:IRI ;
+        sh:message "owl:equivalentClass must be IRIs"
+    ] .
+
+# =====================================================
+# RDF PROPERTY DEFINITIONS (TypeProperty objects)  
+# =====================================================
+
+ex:PropertyDefinitionShape
+    a sh:NodeShape ;
+    sh:targetClass rdf:Property ;
+    sh:name "RDF Property Shape" ;
+    sh:description "Validates TypeProperty objects - RDF property definitions with domain/range" ;
+    
+    # Optional label and comment
+    sh:property [
+        sh:path rdfs:label ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:message "rdfs:label must be a single string literal"
+    ] ;
+    
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:message "rdfs:comment must be a single string literal"
+    ] ;
+    
+    # Domain includes (what classes can have this property)
+    sh:property [
+        sh:path schema:domainIncludes ;
+        sh:nodeKind sh:IRI ;
+        sh:message "schema:domainIncludes must reference valid class IRIs"
+    ] ;
+    
+    # Range includes (what types can be values)
+    sh:property [
+        sh:path schema:rangeIncludes ;
+        sh:nodeKind sh:IRI ;
+        sh:message "schema:rangeIncludes must reference valid type/class IRIs"
+    ] ;
+    
+    # Optional equivalent properties  
+    sh:property [
+        sh:path owl:equivalentProperty ;
+        sh:nodeKind sh:IRI ;
+        sh:message "owl:equivalentProperty must be IRIs"
+    ] .
+
+# =====================================================
+# OWL RESTRICTION DEFINITIONS (Cardinality constraints)
+# =====================================================
+
+ex:RestrictionDefinitionShape
+    a sh:NodeShape ;
+    sh:targetClass owl:Restriction ;
+    sh:name "OWL Restriction Shape" ;
+    sh:description "Validates cardinality restrictions generated from TypeProperty.required fields" ;
+    
+    # Must reference a property
+    sh:property [
+        sh:path owl:onProperty ;
+        sh:class rdf:Property ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "owl:Restriction must have exactly one owl:onProperty referencing an rdf:Property"
+    ] ;
+    
+    # Must have at least one cardinality constraint
+    sh:or (
+        [
+            sh:property [
+                sh:path owl:minCardinality ;
+                sh:minCount 1 ;
+                sh:maxCount 1
+            ]
+        ]
+        [
+            sh:property [
+                sh:path owl:maxCardinality ;
+                sh:minCount 1 ;
+                sh:maxCount 1
+            ]
+        ]
+        [
+            sh:property [
+                sh:path owl:cardinality ;
+                sh:minCount 1 ;
+                sh:maxCount 1
+            ]
+        ]
+    ) ;
+    
+    # Cardinality values must be non-negative integers (0 or 1 in our system)
+    sh:property [
+        sh:path owl:minCardinality ;
+        sh:nodeKind sh:Literal ;
+        sh:in (0 1) ;
+        sh:message "minCardinality must be 0 (optional) or 1 (required)"
+    ] ;
+    
+    sh:property [
+        sh:path owl:maxCardinality ;
+        sh:nodeKind sh:Literal ;
+        sh:in (0 1) ;
+        sh:message "maxCardinality must be 0 (unbounded) or 1 (single value)"
+    ] .
+
+# =====================================================  
+# METADATA ENTRY INSTANCES (MetadataEntry objects)
+# =====================================================
+
+ex:InstanceShape  
+    a sh:NodeShape ;
+    sh:name "Metadata Entry Instance Shape" ;
+    sh:description "Validates MetadataEntry instances - entities with properties and references" ;
+    
+    # Target nodes that have a type but are not schema definitions
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            SELECT ?this WHERE {
+                ?this a ?type .
+                FILTER(
+                    ?type != rdfs:Class &&
+                    ?type != rdf:Property && 
+                    ?type != owl:Restriction &&
+                    !STRSTARTS(STR(?type), "http://www.w3.org/") &&
+                    !STRSTARTS(STR(?type), "https://schema.org/")
+                )
+            }
+        """
+    ] ;
+    
+    # Must have exactly one type declaration
+    sh:property [
+        sh:path rdf:type ;
+        sh:minCount 1 ;
+        sh:message "Every metadata entry must have exactly one rdf:type"
+    ] .
+
+# =====================================================
+# RANGE VALIDATION FOR COMMON XSD TYPES  
+# =====================================================
+
+ex:StringPropertyShape
+    a sh:NodeShape ;
+    sh:name "String Property Validation" ;
+    sh:description "Validates properties with xsd:string range" ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            SELECT ?this WHERE {
+                ?this ?prop ?value .
+                ?prop schema:rangeIncludes xsd:string .
+                FILTER(isLiteral(?value))
+            }
+        """
+    ] ;
+    sh:nodeKind sh:Literal ;
+    sh:datatype xsd:string .
+
+ex:IntegerPropertyShape
+    a sh:NodeShape ;
+    sh:name "Integer Property Validation" ;
+    sh:description "Validates properties with xsd:integer range" ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            SELECT ?this WHERE {
+                ?this ?prop ?value .
+                ?prop schema:rangeIncludes xsd:integer .
+                FILTER(isLiteral(?value))
+            }
+        """
+    ] ;
+    sh:nodeKind sh:Literal ;
+    sh:datatype xsd:integer .
+
+# =====================================================
+# REFERENCE VALIDATION (Object Properties)
+# =====================================================
+
+ex:ReferencePropertyShape
+    a sh:NodeShape ;
+    sh:name "Reference Property Validation" ;
+    sh:description "Validates reference properties that point to other entities" ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            SELECT ?this WHERE {
+                ?this ?prop ?target .
+                ?prop schema:rangeIncludes ?rangeClass .
+                ?target a ?targetType .
+                FILTER(
+                    !isLiteral(?target) &&
+                    ?rangeClass != xsd:string &&
+                    ?rangeClass != xsd:integer &&
+                    ?rangeClass != xsd:dateTime &&
+                    ?rangeClass != xsd:boolean
+                )
+            }
+        """
+    ] ;
+    sh:nodeKind sh:IRI .
+
+# =====================================================
+# CONSISTENCY VALIDATION 
+# =====================================================
+
+ex:DomainConsistencyShape
+    a sh:NodeShape ;
+    sh:name "Domain Consistency Validation" ;
+    sh:description "Ensures entities only use properties appropriate for their type" ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            SELECT ?this WHERE {
+                ?this a ?type .
+                ?this ?prop ?value .
+                ?prop schema:domainIncludes ?domain .
+                FILTER(?type != ?domain && ?type != rdfs:Class && ?type != rdf:Property && ?type != owl:Restriction)
+            }
+        """
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "Entity type must be compatible with property domain" ;
+        sh:select """
+            SELECT $this ?prop ?domain ?actualType WHERE {
+                $this a ?actualType .
+                $this ?prop ?value .
+                ?prop schema:domainIncludes ?domain .
+                FILTER(?actualType != ?domain)
+            }
+        """
+    ] .
+
+ex:RequiredPropertyShape
+    a sh:NodeShape ;
+    sh:name "Required Property Validation" ;
+    sh:description "Ensures required properties (minCardinality=1) are present" ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            SELECT ?this WHERE {
+                ?this a ?type .
+                ?type owl:restriction ?restriction .
+                ?restriction owl:minCardinality 1 .
+                ?restriction owl:onProperty ?requiredProp .
+                FILTER NOT EXISTS { ?this ?requiredProp ?value }
+            }
+        """
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "Required property is missing" ;
+        sh:select """
+            SELECT $this ?requiredProp WHERE {
+                $this a ?type .
+                ?type owl:restriction ?restriction .
+                ?restriction owl:minCardinality 1 .
+                ?restriction owl:onProperty ?requiredProp .
+                FILTER NOT EXISTS { $this ?requiredProp ?value }
+            }
+        """
+    ] .
