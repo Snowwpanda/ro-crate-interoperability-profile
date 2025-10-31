@@ -1,205 +1,246 @@
-# RO-Crate Schema Library (Python)
+# RO-Crate Schema Library
 
-This is the Python implementation of the RO-Crate Interoperability Profile, providing a Pythonic interface for creating, managing, and exporting RO-Crates with schema definitions and data files.
+[![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## Key Features
+A Pythonic library for creating and managing [RO-Crates](https://www.researchobject.org/ro-crate/) with schema definitions using Pydantic models.
 
-- **Pydantic Integration**: Define schemas using familiar Pydantic models with decorators
-- **File Handling**: Built-in support for including data files in RO-Crates  
-- **Schema Export**: Convert Pydantic models to RDFS/OWL schema definitions
-- **RO-Crate I/O**: Import and export complete RO-Crates with metadata and files
-- **Type Safety**: Strongly typed models with automatic validation
-- **Round-trip Fidelity**: Import RO-Crates back to Python objects
-- **Flexible API**: Both high-level decorator approach and low-level manual construction
+**🚀 New to RO-Crate? Start with the [Quick Start Guide](QUICKSTART.md)!**
+
+## What is it?
+
+This library provides a clean, type-safe interface for creating RO-Crates (Research Object Crates) - a community standard for packaging research data with their metadata. It uses familiar Pydantic models with decorators to define schemas that automatically generate RDF/OWL definitions.
 
 ## Installation
 
-1. Make sure you install `astral-uv`
-2. Move to the project folder [here](./)
-3. Run the following commands
+### From PyPI (recommended)
+
 ```bash
-uv venv
-source .venv/bin/activate
-uv pip install -e .
+pip install lib-ro-crate-schema
+```
+
+### From Source
+
+```bash
+git clone https://github.com/Snowwpanda/ro-crate-interoperability-profile.git
+cd ro-crate-interoperability-profile/0.2.x/lib/python/lib-ro-crate-schema
+pip install -e .
 ```
 
 ## Quick Start
 
-
-### Method 1: Decorator Style (Recommended)
-
-The decorator approach provides the most Pythonic and convenient way to define RO-Crate schemas:
+Here's a minimal example to get you started:
 
 ```python
-from lib_ro_crate_schema.crate.decorators import ro_crate_schema, Field
-from lib_ro_crate_schema.crate.schema_facade import SchemaFacade
+from lib_ro_crate_schema import SchemaFacade, ro_crate_schema, Field
 from pydantic import BaseModel
-from datetime import datetime
 
+# Define your schema using decorators
 @ro_crate_schema(ontology="https://schema.org/Person")
 class Person(BaseModel):
     name: str = Field(ontology="https://schema.org/name")
     email: str = Field(ontology="https://schema.org/email")
-    affiliation: str = Field(comment="Research institution")
 
-@ro_crate_schema(ontology="https://schema.org/Dataset")
-class Experiment(BaseModel):
-    title: str = Field(ontology="https://schema.org/name")
-    date: datetime = Field(ontology="https://schema.org/dateCreated")
-    researcher: Person = Field(ontology="https://schema.org/author")
+# Create an instance
+person = Person(name="Dr. Alice Smith", email="alice@example.com")
 
-# Create instances and export
-person = Person(name="Dr. Alice Smith", email="alice@example.com", affiliation="MIT")
-experiment = Experiment(
-    title="Chemical Synthesis Study",
-    date=datetime.now(),
-    researcher=person
-)
-
+# Export to RO-Crate
 facade = SchemaFacade()
-facade.add_all_registered_models()  # Automatically includes all @ro_crate_schema models
-facade.add_model_instance(person, "researcher_001")
-facade.add_model_instance(experiment, "experiment_001")
-facade.add_file("data.csv", name="Experimental Results")
+facade.add_all_registered_models()  # Register all @ro_crate_schema models
+facade.add_model_instance(person, "person_001")
 facade.write("my_research_crate")
 ```
 
-### Method 2: Manual Construction
+This creates a complete RO-Crate with:
+- `ro-crate-metadata.json` containing your data and schema
+- Proper RDF/OWL definitions
+- Schema.org ontology mappings
 
-For fine-grained control or compatibility with existing code, you can manually construct Type, TypeProperty, and MetadataEntry objects:
+## Key Features
+
+✨ **Pydantic Integration** - Define schemas using familiar Pydantic models  
+📦 **File Handling** - Include data files alongside metadata  
+🔄 **Round-trip Support** - Import and re-export RO-Crates without data loss  
+🏷️ **Ontology Mapping** - Map to standard vocabularies (Schema.org, custom ontologies)  
+🔒 **Type Safety** - Strong typing with automatic validation  
+📊 **RDF Export** - Generate RDFS/OWL schema definitions
+
+## More Examples
+
+### Including Data Files
 
 ```python
-from lib_ro_crate_schema.crate.schema_facade import SchemaFacade
-from lib_ro_crate_schema.crate.type import Type
-from lib_ro_crate_schema.crate.type_property import TypeProperty
-from lib_ro_crate_schema.crate.metadata_entry import MetadataEntry
-from lib_ro_crate_schema.crate.restriction import Restriction
+facade.add_file("experiment_data.csv", name="Experimental Results", 
+                description="Raw data from chemical synthesis experiment")
+facade.write("my_crate")
+```
 
-# Create TypeProperty definitions
+### Complex Relationships
+
+```python
+@ro_crate_schema(ontology="https://schema.org/Organization")
+class Organization(BaseModel):
+    name: str = Field(ontology="https://schema.org/name")
+
+@ro_crate_schema(ontology="https://schema.org/Person")  
+class Person(BaseModel):
+    name: str = Field(ontology="https://schema.org/name")
+    affiliation: Organization = Field(ontology="https://schema.org/affiliation")
+
+org = Organization(name="MIT")
+person = Person(name="Alice", affiliation=org)
+
+facade = SchemaFacade()
+facade.add_all_registered_models()
+facade.add_model_instance(org, "org_001")
+facade.add_model_instance(person, "person_001")
+facade.write("my_crate")
+```
+
+### Importing Existing RO-Crates
+
+```python
+from lib_ro_crate_schema import SchemaFacade
+
+facade = SchemaFacade.from_ro_crate("path/to/existing_crate")
+# Modify and re-export
+facade.write("modified_crate")
+```
+
+## Documentation
+
+- **[Full Examples](examples/)** - Comprehensive examples including scientific workflows
+- **[API Reference](src/lib_ro_crate_schema/)** - Detailed API documentation
+- **[Tests](tests/)** - Test suite demonstrating all features
+
+### Running Examples
+
+```bash
+# Simple decorator example
+python examples/decorator_example.py
+
+# Complex scientific workflow with file handling
+python examples/full_example.py
+
+# Import/export demonstration  
+python examples/minimal_import_example.py
+```
+
+### Running Tests
+
+```bash
+# All tests
+python run_all_tests.py
+
+# Or with pytest
+pytest tests/
+```
+
+## Advanced Usage
+
+### Manual Construction (without decorators)
+
+For fine-grained control, you can manually construct Type, TypeProperty, and MetadataEntry objects:
+
+```python
+from lib_ro_crate_schema import SchemaFacade, Type, TypeProperty, MetadataEntry
+
+# Create property definition
 name_property = TypeProperty(
     id="name",
     range_includes=["http://www.w3.org/2001/XMLSchema#string"],
-    ontological_annotations=["https://schema.org/name"],
-    comment="Person's full name",
-    required=True
+    ontological_annotations=["https://schema.org/name"]
 )
 
-email_property = TypeProperty(
-    id="email", 
-    range_includes=["http://www.w3.org/2001/XMLSchema#string"],
-    ontological_annotations=["https://schema.org/email"],
-    comment="Contact email address"
-)
-
-# Create restrictions
-name_restriction = Restriction(
-    property_type="name",
-    min_cardinality=1,
-    max_cardinality=1
-)
-
-# Create Type definition
+# Create type definition  
 person_type = Type(
     id="Person",
     ontological_annotations=["https://schema.org/Person"],
-    rdfs_property=[name_property, email_property],
-    restrictions=[name_restriction],
-    comment="Represents a person in the research context"
+    rdfs_property=[name_property]
 )
 
-# Create MetadataEntry (instance data)
+# Create instance data
 person_entry = MetadataEntry(
     id="person_001",
-    class_id="Person",
-    properties={
-        "name": "Dr. Alice Smith",
-        "email": "alice@example.com"
-    }
+    class_id="Person", 
+    properties={"name": "Alice"}
 )
 
-# Add to facade and export
 facade = SchemaFacade()
 facade.addType(person_type)
 facade.addEntry(person_entry)
 facade.write("manual_crate")
 ```
 
+See [`examples/python_quickstart_write.py`](examples/python_quickstart_write.py) for more details.
 
+## API Overview
 
-## Documentation
+### Core Classes
 
-### Examples
-- **[`full_example.py`](examples/full_example.py)** - Complex scientific workflow with OpenBIS hierarchy, file handling, and experimental synthesis simulation
-- **[`python_quickstart.py`](examples/python_quickstart.py)** - Fluent builder API demonstrating manual Type, PropertyType, and MetadataEntry construction
-- **[`decorator_example.py`](examples/decorator_example.py)** - Comprehensive @ro_crate_schema decorator usage with Person, Organization, and Publication models
-- **[`architecture_demo.py`](examples/architecture_demo.py)** - Complete architecture flow demonstration showing Pydantic → RDF → RO-Crate transformations
-- **[`export_pydantic_demo.py`](examples/export_pydantic_demo.py)** - Exporting Type definitions back to Pydantic model classes for dynamic code generation
-- **[`minimal_import_example.py`](examples/minimal_import_example.py)** - Simple RO-Crate import example loading external openBIS crates
-- **[`api_spec_test.py`](tests/api_spec_test.py)** - API specification compliance tests validating interface contracts and method signatures
-- **[`examples.py`](examples/examples.py)** - Collection of smaller examples demonstrating specific features
-- **[`rdf_lib_example.py`](examples/rdf_lib_example.py)** - Direct RDFLib integration for advanced RDF graph manipulation
+| Class | Purpose |
+|-------|---------|
+| `SchemaFacade` | Main interface for creating and exporting RO-Crates |
+| `Type` | Define RDFS classes (schema types) |
+| `TypeProperty` | Define RDF properties for types |
+| `MetadataEntry` | Instance data conforming to a Type |
+| `Restriction` | OWL cardinality and property restrictions |
 
-### Tests
-- **[`test_roundtrip.py`](tests/test_roundtrip.py)** - Round-trip fidelity tests ensuring export→import→export consistency
-- **[`test_schema_facade.py`](tests/test_schema_facade.py)** - Core SchemaFacade functionality and file handling integration tests
-- **[`test_integration.py`](tests/test_integration.py)** - End-to-end integration tests covering the complete workflow
+### Decorators (Recommended)
 
-## Schema API Quick Reference
+| Decorator | Purpose |
+|-----------|---------|
+| `@ro_crate_schema` | Mark Pydantic model as RO-Crate schema type |
+| `Field` | Enhanced Pydantic Field with ontology mapping |
 
-### SchemaFacade
-| Method | Description |
-|--------|-------------|
-| `add_all_registered_models()` | Add all @ro_crate_schema decorated models |
-| `add_model_instance(instance, id)` | Add Pydantic instance as metadata entry |
-| `addType(type_obj)` | Add Type definition to schema |
-| `addEntry(entry)` | Add MetadataEntry to schema |
-| `add_file(path, name, description)` | Add data file to be included in crate |
-| `write(destination, name, description)` | Export complete RO-Crate with files |
-| `to_graph()` | Generate RDFLib Graph representation |
-| `from_ro_crate(path)` | Import existing RO-Crate |
+### SchemaFacade Methods
 
-### Type
-| Method | Description |
-|--------|-------------|
-| `Type(id, ontological_annotations, rdfs_property)` | Create RDFS Class definition |
-| `to_triples()` | Generate RDF triples for the Type |
-| `resolve(resolver)` | Resolve forward references |
+```python
+facade = SchemaFacade()
 
-### TypeProperty  
-| Method | Description |
-|--------|-------------|
-| `TypeProperty(id, range_includes, ontological_annotations)` | Create RDF Property definition |
-| `to_triples()` | Generate RDF triples for the Property |
-| `domain_includes` | Classes that can have this property |
-| `range_includes` | Allowed value types for this property |
+# Decorator API
+facade.add_all_registered_models()           # Add all @ro_crate_schema models
+facade.add_model_instance(instance, id)      # Add Pydantic instance
 
-### MetadataEntry
-| Method | Description |
-|--------|-------------|
-| `MetadataEntry(id, class_id, properties, references)` | Create instance metadata |
-| `to_triples()` | Generate RDF triples for the instance |
-| `properties` | Direct property values (strings, numbers) |
-| `references` | References to other entities by ID |
+# Manual API
+facade.addType(type_obj)                     # Add Type definition
+facade.addEntry(entry)                       # Add MetadataEntry
 
-### Restriction
-| Method | Description |  
-|--------|-------------|
-| `Restriction(property_type, min_cardinality, max_cardinality)` | Create OWL cardinality constraint |
-| `to_triples()` | Generate RDF triples for the restriction |
+# File handling
+facade.add_file(path, name, description)     # Include data file
 
-## Complete Example
+# Export
+facade.write(destination)                    # Write complete RO-Crate
+facade.to_graph()                            # Get RDFLib Graph
 
-For a comprehensive demonstration of all library capabilities, see [`examples/full_example.py`](examples/full_example.py). This example showcases:
-
-- **Complex Scientific Workflow**: Complete OpenBIS-style hierarchy with Projects, Spaces, Collections, and Equipment
-- **Chemical Synthesis Simulation**: Experimental workflow with molecule transformations
-- **File Integration**: Automatic generation and inclusion of experimental observation data (CSV)
-- **Self-referential Models**: Molecules containing other molecules, nested equipment relationships
-- **Mixed Ontologies**: Combining custom OpenBIS namespaces with standard schema.org vocabularies
-- **Round-trip Workflow**: Export → Import → Modify → Re-export cycle
-
-Run with:
-```bash
-python examples/full_example.py
+# Import
+SchemaFacade.from_ro_crate(path)            # Load existing RO-Crate
 ```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+## Citation
+
+If you use this library in your research, please cite:
+
+```bibtex
+@software{ro_crate_schema,
+  title = {RO-Crate Schema Library},
+  author = {Baffelli, Simone and Su, Pascal},
+  year = {2025},
+  url = {https://github.com/Snowwpanda/ro-crate-interoperability-profile}
+}
+```
+
+## Links
+
+- **Repository**: https://github.com/Snowwpanda/ro-crate-interoperability-profile
+- **RO-Crate Specification**: https://www.researchobject.org/ro-crate/
+- **Pydantic Documentation**: https://docs.pydantic.dev/
 
