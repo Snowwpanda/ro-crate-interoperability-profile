@@ -3,13 +3,17 @@
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-A Pythonic library for creating and managing [RO-Crates](https://www.researchobject.org/ro-crate/) with schema definitions using Pydantic models.
+A Pythonic library for creating and managing [RO-Crates](https://www.researchobject.org/ro-crate/).
 
 **🚀 New to RO-Crate? Start with the [Quick Start Guide](QUICKSTART.md)!**
 
 ## What is it?
 
-This library provides a clean, type-safe interface for creating RO-Crates (Research Object Crates) - a community standard for packaging research data with their metadata. It uses familiar Pydantic models with decorators to define schemas that automatically generate RDF/OWL definitions.
+This library provides an interface for creating RO-Crates (Research Object Crates) a community standard for packaging research data with their metadata. Additionally to conventional crates, it allows to easily add objects of custom types (not present in Schema.org) and encode them as RDF according to the [profile](../../../spec.md). 
+The modules offers two interface to operate with crates:
+
+1. Pydantic models with decorators to declaratively define schemas that automatically generate RDF/OWL definitions. 
+2. Pogrammatic builder-style interfaces for integration with other tooling or for working with objects whose schema isn't known at *compile time*.
 
 ## Installation
 
@@ -22,7 +26,7 @@ pip install lib-ro-crate-schema
 ### From Source
 
 ```bash
-git clone https://github.com/Snowwpanda/ro-crate-interoperability-profile.git
+git clone https://github.com/researchobjectschema/ro-crate-interoperability-profile
 cd ro-crate-interoperability-profile/0.2.x/lib/python/lib-ro-crate-schema
 pip install -e .
 ```
@@ -140,7 +144,7 @@ pytest tests/
 
 ### Manual Construction (without decorators)
 
-For fine-grained control, you can manually construct Type, TypeProperty, and MetadataEntry objects:
+For fine-grained control, you can manually construct Type, TypeProperty, and MetadataEntry objects. This is useful for example when constructing objects from other schemas like SQL or JSON schemas, which don't immediately correspond to pydantic models. You can use it like this:
 
 ```python
 from lib_ro_crate_schema import SchemaFacade, Type, TypeProperty, MetadataEntry
