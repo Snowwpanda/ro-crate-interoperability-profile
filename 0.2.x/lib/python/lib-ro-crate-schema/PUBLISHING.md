@@ -25,7 +25,7 @@ Before publishing, ensure:
 
 - [ ] Version number updated in `pyproject.toml` (follow [Semantic Versioning](https://semver.org/))
 - [ ] `README.md` is up-to-date and renders correctly
-- [ ] All tests pass: `python run_all_tests.py`
+- [ ] All tests pass: `pytest` or `pytest tests/`
 - [ ] `LICENSE` file is present
 - [ ] Dependencies in `pyproject.toml` are correct and use appropriate version constraints
 - [ ] Author information is correct
@@ -34,8 +34,13 @@ Before publishing, ensure:
 ## Building the Package
 
 1. **Clean Previous Builds**:
+   ```powershell
+   # Remove old build artifacts (PowerShell)
+   Remove-Item -Recurse -Force dist, build, *.egg-info -ErrorAction SilentlyContinue
+   ```
+   
+   Or on Linux/Mac:
    ```bash
-   # Remove old build artifacts
    rm -rf dist/ build/ *.egg-info
    ```
 
@@ -86,7 +91,8 @@ Always test your package on Test PyPI before publishing to production:
 3. **Run Your Examples**:
    ```bash
    # Copy your examples to the test environment and run them
-   python examples/decorator_example.py
+   python examples/full_example.py
+   python examples/minimal_pydantic_example.py
    ```
 
 ## Publishing to Production PyPI
@@ -220,6 +226,26 @@ Update version in:
 
 ## Quick Reference Commands
 
+PowerShell:
+```powershell
+# Clean build
+Remove-Item -Recurse -Force dist, build, *.egg-info -ErrorAction SilentlyContinue
+
+# Build package
+python -m build
+
+# Upload to Test PyPI
+python -m twine upload --repository testpypi dist/*
+
+# Upload to PyPI
+python -m twine upload dist/*
+
+# Test installation
+pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ lib-ro-crate-schema  # Test PyPI
+pip install lib-ro-crate-schema  # Production PyPI
+```
+
+Bash (Linux/Mac):
 ```bash
 # Clean build
 rm -rf dist/ build/ *.egg-info
