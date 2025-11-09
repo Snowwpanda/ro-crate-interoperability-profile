@@ -1,0 +1,31 @@
+include README.md
+include LICENSE
+include PUBLISHING.md
+include TECHNICAL.md
+include pyproject.toml
+
+# Include examples (only the 4 main examples)
+include examples/python_quickstart_write.py
+include examples/python_quickstart_read.py
+include examples/minimal_pydantic_example.py
+include examples/full_example.py
+
+# Include tests
+recursive-include tests *.py
+recursive-include tests *.shacl
+
+# Exclude compiled Python files
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude __pycache__
+
+# Exclude build artifacts
+global-exclude *.so
+global-exclude *.dylib
+global-exclude .DS_Store
+
+# Exclude output directories
+prune output_crates
+prune .venv
+prune build
+prune dist

@@ -14,8 +14,8 @@ Quick Start
     
     @ro_crate_schema(ontology="https://schema.org/Person")
     class Person(BaseModel):
-        name: str = Field(ontology="https://schema.org/name")
-        email: str = Field(ontology="https://schema.org/email")
+        name: str = Field(json_schema_extra={"ontology": "https://schema.org/name"})
+        email: str = Field(json_schema_extra={"ontology": "https://schema.org/email"})
     
     # Create and export
     facade = SchemaFacade()

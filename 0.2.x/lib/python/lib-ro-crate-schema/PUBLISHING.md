@@ -234,6 +234,6 @@ python -m twine upload --repository testpypi dist/*
 python -m twine upload dist/*
 
 # Test installation
-pip install --index-url https://test.pypi.org/simple/ lib-ro-crate-schema  # Test PyPI
+pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ lib-ro-crate-schema  # Test PyPI
 pip install lib-ro-crate-schema  # Production PyPI
 ```

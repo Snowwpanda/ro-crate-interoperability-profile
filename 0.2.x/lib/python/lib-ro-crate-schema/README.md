@@ -22,14 +22,20 @@ pip install lib-ro-crate-schema
 ### From Source
 
 ```bash
-git clone https://github.com/Snowwpanda/ro-crate-interoperability-profile.git
+git clone https://github.com/researchobjectschema/ro-crate-interoperability-profile.git
 cd ro-crate-interoperability-profile/0.2.x/lib/python/lib-ro-crate-schema
 pip install -e .
 ```
 
 ## Quick Start
 
-Here's a minimal example to get you started:
+For complete working examples, see the `examples/` directory:
+- **[python_quickstart_write.py](examples/python_quickstart_write.py)** - Create and export an RO-Crate
+- **[python_quickstart_read.py](examples/python_quickstart_read.py)** - Import and read an RO-Crate
+- **[minimal_pydantic_example.py](examples/minimal_pydantic_example.py)** - Minimal Pydantic usage
+- **[full_example.py](examples/full_example.py)** - Complete export/import/modify workflow
+
+Here's a minimal example of creating an RO-Crate with schema definitions:
 
 ```python
 from lib_ro_crate_schema import SchemaFacade, ro_crate_schema, Field
@@ -38,8 +44,8 @@ from pydantic import BaseModel
 # Define your schema using decorators
 @ro_crate_schema(ontology="https://schema.org/Person")
 class Person(BaseModel):
-    name: str = Field(ontology="https://schema.org/name")
-    email: str = Field(ontology="https://schema.org/email")
+    name: str = Field(json_schema_extra={"ontology": "https://schema.org/name"})
+    email: str = Field(json_schema_extra={"ontology": "https://schema.org/email"})
 
 # Create an instance
 person = Person(name="Dr. Alice Smith", email="alice@example.com")
@@ -80,12 +86,12 @@ facade.write("my_crate")
 ```python
 @ro_crate_schema(ontology="https://schema.org/Organization")
 class Organization(BaseModel):
-    name: str = Field(ontology="https://schema.org/name")
+    name: str = Field(json_schema_extra={"ontology": "https://schema.org/name"})
 
 @ro_crate_schema(ontology="https://schema.org/Person")  
 class Person(BaseModel):
-    name: str = Field(ontology="https://schema.org/name")
-    affiliation: Organization = Field(ontology="https://schema.org/affiliation")
+    name: str = Field(json_schema_extra={"ontology": "https://schema.org/name"})
+    affiliation: Organization = Field(json_schema_extra={"ontology": "https://schema.org/affiliation"})
 
 org = Organization(name="MIT")
 person = Person(name="Alice", affiliation=org)
@@ -234,13 +240,20 @@ If you use this library in your research, please cite:
   title = {RO-Crate Schema Library},
   author = {Baffelli, Simone and Su, Pascal},
   year = {2025},
-  url = {https://github.com/Snowwpanda/ro-crate-interoperability-profile}
+  url = {https://github.com/researchobjectschema/ro-crate-interoperability-profile}
 }
 ```
 
+## Documentation
+
+- **[README.md](README.md)** - Installation and quick start
+- **[TECHNICAL.md](TECHNICAL.md)** - Architecture, components, and API reference
+- **[PUBLISHING.md](PUBLISHING.md)** - Guide for publishing to PyPI
+- **[examples/](examples/)** - Working code examples
+
 ## Links
 
-- **Repository**: https://github.com/Snowwpanda/ro-crate-interoperability-profile
+- **Repository**: https://github.com/researchobjectschema/ro-crate-interoperability-profile
 - **RO-Crate Specification**: https://www.researchobject.org/ro-crate/
 - **Pydantic Documentation**: https://docs.pydantic.dev/
 

@@ -12,14 +12,17 @@ def Field(ontology: Optional[str] = None, comment: Optional[str] = None, **kwarg
     """Enhanced Pydantic Field that supports ontology annotations for RO-Crate schema generation.
     
     Args:
-        ontology: URI of the ontological concept this field represents
-        comment: Human-readable description of this field
-        **kwargs: Standard Pydantic Field arguments
+        ontology: URI of the ontological concept this field represents (deprecated: use json_schema_extra)
+        comment: Human-readable description of this field (deprecated: use json_schema_extra)
+        **kwargs: Standard Pydantic Field arguments, including json_schema_extra
     
     Returns:
         Pydantic FieldInfo with RO-Crate metadata
     
-    Example:
+    Example (recommended):
+        name: str = Field(json_schema_extra={"ontology": "https://schema.org/name", "comment": "Person's full name"})
+    
+    Example (deprecated but still supported):
         name: str = Field(ontology="https://schema.org/name", comment="Person's full name")
     """
     # Store RO-Crate specific metadata in json_schema_extra
@@ -67,8 +70,8 @@ def ro_crate_schema(
     Example:
         @ro_crate_schema(id="Person", ontology="https://schema.org/Person")
         class PersonModel(BaseModel):
-            name: str = Field(ontology="https://schema.org/name")
-            email: str = Field(ontology="https://schema.org/email")
+            name: str = Field(json_schema_extra={"ontology": "https://schema.org/name"})
+            email: str = Field(json_schema_extra={"ontology": "https://schema.org/email"})
     """
     def decorator(cls: Type[BaseModel]) -> Type[BaseModel]:
         # Ensure it's a Pydantic model

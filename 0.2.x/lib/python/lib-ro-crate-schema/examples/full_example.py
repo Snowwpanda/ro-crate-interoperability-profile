@@ -45,82 +45,82 @@ from lib_ro_crate_schema.crate.schema_facade import SchemaFacade
 @ro_crate_schema(ontology="http://openbis.org/Project")
 class Project(BaseModel):
     """OpenBIS research project"""
-    code: str = Field(comment="Unique project identifier")
-    name: str = Field(ontology="https://schema.org/name")
-    description: str = Field(ontology="https://schema.org/description")
-    created_date: datetime = Field(ontology="https://schema.org/dateCreated")
-    space: Optional['Space'] = Field(default=None, ontology="http://openbis.org/hasSpace")
+    code: str = Field(json_schema_extra={"comment": "Unique project identifier"})
+    name: str = Field(json_schema_extra={"ontology": "https://schema.org/name"})
+    description: str = Field(json_schema_extra={"ontology": "https://schema.org/description"})
+    created_date: datetime = Field(json_schema_extra={"ontology": "https://schema.org/dateCreated"})
+    space: Optional['Space'] = Field(default=None, json_schema_extra={"ontology": "http://openbis.org/hasSpace"})
 
 
 @ro_crate_schema(ontology="http://openbis.org/Space")
 class Space(BaseModel):
     """OpenBIS laboratory space"""
-    name: str = Field(ontology="https://schema.org/name")
-    description: str = Field(ontology="https://schema.org/description") 
-    created_date: datetime = Field(ontology="https://schema.org/dateCreated")
-    collections: List['Collection'] = Field(default=[], ontology="http://openbis.org/hasCollection")
+    name: str = Field(json_schema_extra={"ontology": "https://schema.org/name"})
+    description: str = Field(json_schema_extra={"ontology": "https://schema.org/description"})
+    created_date: datetime = Field(json_schema_extra={"ontology": "https://schema.org/dateCreated"})
+    collections: List['Collection'] = Field(default=[], json_schema_extra={"ontology": "http://openbis.org/hasCollection"})
 
 @ro_crate_schema(ontology="http://openbis.org/Collection")
 class Collection(BaseModel):
     """OpenBIS sample/data collection"""
-    name: str = Field(ontology="https://schema.org/name")
-    sample_type: str = Field(comment="Type of samples stored")
-    storage_conditions: str = Field(comment="Storage requirements")
-    created_date: datetime = Field(ontology="https://schema.org/dateCreated")
-    contains: List[Any] = Field(default=[], comment="Entities contained in the collection")
+    name: str = Field(json_schema_extra={"ontology": "https://schema.org/name"})
+    sample_type: str = Field(json_schema_extra={"comment": "Type of samples stored"})
+    storage_conditions: str = Field(json_schema_extra={"comment": "Storage requirements"})
+    created_date: datetime = Field(json_schema_extra={"ontology": "https://schema.org/dateCreated"})
+    contains: List[Any] = Field(default=[], json_schema_extra={"comment": "Entities contained in the collection"})
 
 
 @ro_crate_schema(ontology="http://openbis.org/Equipment")
 class Equipment(BaseModel):
     """Laboratory equipment with optional nesting"""
-    name: str = Field(ontology="https://schema.org/name")
-    model: str = Field(comment="Equipment model/version")
-    serial_number: str = Field(ontology="https://schema.org/serialNumber")
-    created_date: datetime = Field(ontology="https://schema.org/dateCreated")
-    parent_equipment: Optional['Equipment'] = Field(default=None, ontology="https://schema.org/isPartOf")
-    configuration: Dict[str, Any] = Field(default={}, comment="Equipment configuration parameters")
+    name: str = Field(json_schema_extra={"ontology": "https://schema.org/name"})
+    model: str = Field(json_schema_extra={"comment": "Equipment model/version"})
+    serial_number: str = Field(json_schema_extra={"ontology": "https://schema.org/serialNumber"})
+    created_date: datetime = Field(json_schema_extra={"ontology": "https://schema.org/dateCreated"})
+    parent_equipment: Optional['Equipment'] = Field(default=None, json_schema_extra={"ontology": "https://schema.org/isPartOf"})
+    configuration: Dict[str, Any] = Field(default={}, json_schema_extra={"comment": "Equipment configuration parameters"})
 
 
 @ro_crate_schema(ontology="https://schema.org/ChemicalSubstance")
 class Molecule(BaseModel):
     """Chemical compound with SMILES notation"""
-    name: str = Field(ontology="https://schema.org/name")
-    smiles: str = Field(comment="SMILES notation for chemical structure")
-    molecular_weight: float = Field(comment="Molecular weight in g/mol")
-    contains_molecules: List['Molecule'] = Field(default=[], ontology="https://schema.org/hasPart")
-    cas_number: Optional[str] = Field(default=None, comment="CAS Registry Number")
-    created_date: datetime = Field(ontology="https://schema.org/dateCreated")
-    experimental_notes: Optional[str] = Field(default=None, comment="Lab notes or modifications")
+    name: str = Field(json_schema_extra={"ontology": "https://schema.org/name"})
+    smiles: str = Field(json_schema_extra={"comment": "SMILES notation for chemical structure"})
+    molecular_weight: float = Field(json_schema_extra={"comment": "Molecular weight in g/mol"})
+    contains_molecules: List['Molecule'] = Field(default=[], json_schema_extra={"ontology": "https://schema.org/hasPart"})
+    cas_number: Optional[str] = Field(default=None, json_schema_extra={"comment": "CAS Registry Number"})
+    created_date: datetime = Field(json_schema_extra={"ontology": "https://schema.org/dateCreated"})
+    experimental_notes: Optional[str] = Field(default=None, json_schema_extra={"comment": "Lab notes or modifications"})
 
 
 @ro_crate_schema(ontology="https://schema.org/Person")
 class Person(BaseModel):
     """Research author/scientist"""
-    name: str = Field(ontology="https://schema.org/name")
-    orcid: str = Field(ontology="https://schema.org/identifier")
-    email: str = Field(ontology="https://schema.org/email")
-    affiliation: 'Organization' = Field(ontology="https://schema.org/affiliation")
-    colleagues: List['Person'] = Field(default=[], ontology="https://schema.org/colleague")
+    name: str = Field(json_schema_extra={"ontology": "https://schema.org/name"})
+    orcid: str = Field(json_schema_extra={"ontology": "https://schema.org/identifier"})
+    email: str = Field(json_schema_extra={"ontology": "https://schema.org/email"})
+    affiliation: 'Organization' = Field(json_schema_extra={"ontology": "https://schema.org/affiliation"})
+    colleagues: List['Person'] = Field(default=[], json_schema_extra={"ontology": "https://schema.org/colleague"})
 
 
 @ro_crate_schema(ontology="https://schema.org/Organization")
 class Organization(BaseModel):
     """Research institution"""
-    name: str = Field(ontology="https://schema.org/name")
-    country: str = Field(ontology="https://schema.org/addressCountry")
-    website: str = Field(ontology="https://schema.org/url")
+    name: str = Field(json_schema_extra={"ontology": "https://schema.org/name"})
+    country: str = Field(json_schema_extra={"ontology": "https://schema.org/addressCountry"})
+    website: str = Field(json_schema_extra={"ontology": "https://schema.org/url"})
 
 
 @ro_crate_schema(ontology="https://schema.org/ScholarlyArticle")
 class Publication(BaseModel):
     """Scientific publication"""
-    title: str = Field(ontology="https://schema.org/name")
-    authors: List[Person] = Field(ontology="https://schema.org/author")
-    molecules: List[Molecule] = Field(ontology="https://schema.org/mentions")
-    equipment: List[Equipment] = Field(ontology="https://schema.org/instrument")
-    organization: Organization = Field(ontology="https://schema.org/publisher")
-    doi: str = Field(ontology="https://schema.org/identifier")
-    publication_date: datetime = Field(ontology="https://schema.org/datePublished")
+    title: str = Field(json_schema_extra={"ontology": "https://schema.org/name"})
+    authors: List[Person] = Field(json_schema_extra={"ontology": "https://schema.org/author"})
+    molecules: List[Molecule] = Field(json_schema_extra={"ontology": "https://schema.org/mentions"})
+    equipment: List[Equipment] = Field(json_schema_extra={"ontology": "https://schema.org/instrument"})
+    organization: Organization = Field(json_schema_extra={"ontology": "https://schema.org/publisher"})
+    doi: str = Field(json_schema_extra={"ontology": "https://schema.org/identifier"})
+    publication_date: datetime = Field(json_schema_extra={"ontology": "https://schema.org/datePublished"})
 
 
 def create_initial_data():

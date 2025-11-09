@@ -1,6 +1,6 @@
 [project]
 name = "lib-ro-crate-schema"
-version = "0.2.0"
+version = "0.2.1"
 description = "A Pythonic library for creating and managing RO-Crates with schema definitions using Pydantic models"
 readme = "README.md"
 license = { text = "Apache-2.0" }
@@ -42,10 +42,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Snowwpanda/ro-crate-interoperability-profile"
-Documentation = "https://github.com/Snowwpanda/ro-crate-interoperability-profile/tree/main/0.2.x/lib/python/lib-ro-crate-schema"
-Repository = "https://github.com/Snowwpanda/ro-crate-interoperability-profile"
-Issues = "https://github.com/Snowwpanda/ro-crate-interoperability-profile/issues"
+Homepage = "https://github.com/researchobjectschema/ro-crate-interoperability-profile"
+Documentation = "https://github.com/researchobjectschema/ro-crate-interoperability-profile/tree/main/0.2.x/lib/python/lib-ro-crate-schema"
+Repository = "https://github.com/researchobjectschema/ro-crate-interoperability-profile"
+Issues = "https://github.com/researchobjectschema/ro-crate-interoperability-profile/issues"
 
 [project.optional-dependencies]
 dev = [

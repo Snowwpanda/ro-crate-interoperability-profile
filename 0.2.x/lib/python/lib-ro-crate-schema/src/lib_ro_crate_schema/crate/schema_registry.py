@@ -104,9 +104,13 @@ class SchemaRegistry:
             # Convert to RDF type
             rdf_type = self._type_converter.python_to_rdf(field_type)
             
-            # Extract ontology annotation from field metadata
+            # Extract ontology and comment annotations from field metadata
             json_extra = getattr(field_info, 'json_schema_extra', None) if hasattr(field_info, 'json_schema_extra') else None
             ontology = json_extra.get('ontology') if json_extra else None
+            # Prefer comment from json_schema_extra, fallback to description
+            comment = json_extra.get('comment') if json_extra else None
+            if comment is None:
+                comment = field_info.description
             
             type_property_template = TypePropertyTemplate(
                 name=field_name,
@@ -115,7 +119,7 @@ class SchemaRegistry:
                 required=field_info.is_required(),
                 is_list=is_list,
                 ontology=ontology,
-                comment=field_info.description,
+                comment=comment,
                 default_value=field_info.default if field_info.default is not ... else None
             )
             
