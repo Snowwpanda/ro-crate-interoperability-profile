@@ -1,1 +1,0 @@
-# Test package for lib-ro-crate-schema
